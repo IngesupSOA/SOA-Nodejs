@@ -31,7 +31,7 @@ Liste des tâches :
 	Antoine + Thomas :
 		- Gestion des droits (Token)
 		
-	Leon + Bart :
+	Leon :
 		- Validation du paiement
 			- Infos paimement
 			- Etat commande
@@ -40,5 +40,9 @@ Liste des tâches :
 	Nans + Tristan :
 		- Pizzanoscope
 			- Validation sur son compte
+			
+	Bart :
+	    - Frontend
+	    - Scrapper pizza dominos
 			
 	V2 pour le BDE
