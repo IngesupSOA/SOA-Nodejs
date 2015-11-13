@@ -12,6 +12,7 @@ var Order = new Schema({
     pizzaList: new Array(),
     user: User,
     state: String,
+    payementType: String,
     created_on: Date,
     updated_at: Date
 });
