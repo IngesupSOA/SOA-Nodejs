@@ -22,3 +22,23 @@ site global:
 			SECURISE !!
 
 		Ajouter une idée
+		
+Liste des tâches :
+
+	Massil + Steph :
+		- Page de connexion standard + lien d'inscription
+		
+	Antoine + Thomas :
+		- Gestion des droits (Token)
+		
+	Leon + Bart :
+		- Validation du paiement
+			- Infos paimement
+			- Etat commande
+			- Relance paiement / via mail) (V2 = sms)
+	
+	Nans + Tristan :
+		- Pizzanoscope
+			- Validation sur son compte
+			
+	V2 pour le BDE
