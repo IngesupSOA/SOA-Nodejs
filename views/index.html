@@ -2,11 +2,20 @@
 <html>
    <head>
       <title>
-         A Small Hello
+         Page D'accueil
       </title>
    </head>
 <body>
-   <h1>Hi</h1>
-   <p>This is very minimal "hello world" HTML document.</p>
+   <h1>Connexion</h1>
+   <form method="post" actions="/authenticate">
+      <label for="login">Login</label>
+      <input type="text" name="login"> <br>
+
+      <label for="password">Password</label>
+      <input type="password" name="password"> <br>
+
+      <input type="submit" value ="Se connecter"/>
+   </form>
+   <a href="/signUp">Inscription</a>
 </body>
 </html>
