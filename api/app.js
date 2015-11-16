@@ -8,6 +8,13 @@ var mongoose = require('mongoose');
 var swig = require('swig');
 var config = require('./config.js'); // get our config file
 var server = require('./server.js');
+var userDB = require('./models/UserDB.js');
+
+var routes = require('./routes/index');
+var users = require('./routes/users');
+var signUp = require('./routes/Security/signUp');
+var authenticate = require('./routes/Security/authenticate');
+var order = require('./routes/order');
 
 var app = express();
 
@@ -53,6 +60,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(server);
+app.use('/', routes);
+app.use('/users', users);
+app.use('/signUp', signUp);
+app.use('/authenticate', authenticate);
+app.use('/order', order);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
