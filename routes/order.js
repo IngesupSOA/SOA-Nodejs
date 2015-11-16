@@ -44,6 +44,18 @@ router.get('/paypal', function(req, res, next) {
         }]
     };
 
+    //Ajout d'un objet à la commande
+    paymentDescription.transactions[0].item_list.items.push({
+        "name": "item",
+        "sku": "item",
+        "price": "1.00",
+        "currency": "USD",
+        "quantity": 1
+    });
+
+    //Mise à jour du total
+    paymentDescription.transactions[0].amount.total = "2.00";
+
 
     paypal.payment.create(paymentDescription, configLive, function(error, payment){
         if (error) {
