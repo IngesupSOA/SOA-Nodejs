@@ -3,6 +3,7 @@
  */
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose');
 
 router.post('/', function(req, res, next) {
     //Lien pour la page d'inscription
