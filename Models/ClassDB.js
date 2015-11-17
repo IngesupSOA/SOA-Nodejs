@@ -4,11 +4,21 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+
 var Class = new Schema({
-    name: String,
-    school: String,
-    created_on: Date,
-    updated_at: Date
+    name: { type: String, required: true},
+    school: { type: String, required: true},
+    created_at: { type: Date, required: true, default: Date.now },
+    updated_at: { type: Date, required: true, default: Date.now }
 });
 
-mongoose.model('Class', Class);
+Class.pre('save', function(next){
+    var now = new Date();
+    this.updated_at = now;
+    if ( !this.created_at ) {
+        this.created_at = now;
+    }
+    next();
+});
+
+exports.Class = mongoose.model('Class', Class);

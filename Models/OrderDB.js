@@ -9,13 +9,21 @@ var Pizza = require('./PizzaDB')
 
 
 var Order = new Schema({
-    pizzaList: new Array(),
-    user: User,
-    state: String,
-    payementType: String,
-    created_on: Date,
-    updated_at: Date
+    pizzaList: { type: [Pizza], required: true },
+    user: { type: User, required: true },
+    state: { type: String, required: true, trim: true },
+    paymentType: { type: String, required: true, trim: true },
+    created_at: { type: Date, required: true, default: Date.now },
+    updated_at: { type: Date, required: true, default: Date.now }
 });
 
+Order.pre('save', function(next){
+    var now = new Date();
+    this.updated_at = now;
+    if ( !this.created_at ) {
+        this.created_at = now;
+    }
+    next();
+});
 
-mongoose.model('Order', Order);
+exports.Order = mongoose.model('Order', Order);
