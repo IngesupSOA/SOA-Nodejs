@@ -13,7 +13,7 @@ router.get('/new', function(req, res, next) {
     username: 'nick',
     email: 'nick.cerminara@gmail.com',
     password: 'password',
-    avatar: '',
+    avatar: 'something there',
     address: '5th Main Street Avenue, 35697 NYC, USA',
     phoneNumber: '+45 005 458 223',
     admin: true,

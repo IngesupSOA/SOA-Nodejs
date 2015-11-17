@@ -59,15 +59,3 @@ router.get('/update/:lastname/:value', function(req, res, next){
 });
 
 module.exports = router;
-
-
-router.get('/new', function(req, res, next) {
-  new User ({
-    firstname: 'Antoine',
-    lastname: 'Maitre',
-    age: 21,
-    update_at: Date.now()
-  }).save();
-
-  res.send('User créé');
-});

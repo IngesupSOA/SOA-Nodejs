@@ -17,8 +17,8 @@ router.get('/', function(req, res, next) {
 router.post('/', function(req, res, next) {
     //Lien pour la page d'inscription
     //res.redirect('/sign_up_page');
-    console.log(req.body.login);
-    res.send(req.body.login);
+    res.send(req.body);
+    res.json({rool: 'yolo'});
 });
 
 
