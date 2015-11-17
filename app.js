@@ -19,6 +19,9 @@ var signUp = require('./routes/Security/signUp');
 var authenticate = require('./routes/Security/authenticate');
 //var setup = require('./routes/setup');
 
+var mongoose = require('mongoose');
+mongoose.connect('localhost', 'Pizzanoscope_DB');
+
 var app = express();
 
 
