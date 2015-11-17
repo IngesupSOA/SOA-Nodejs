@@ -7,14 +7,14 @@ var Schema = mongoose.Schema;
 var Class = require('./ClassDB');
 
 var User = new Schema({
-    firstname: { type: String, required: true, trim: true },
-    lastname: { type: String, required: true, trim: true },
-    username: { type: String, required: true, trim: true },
-    email: { type: String, required: true, trim: true },
-    password: { type: String, required: true, trim: true },
-    avatar: { type: String, required: true, trim: true },
-    adress: { type: String, required: true},
-    phoneNumber: { type: String, required: true, trim: true },
+    firstname: { type: String, required: true},
+    lastname: { type: String, required: true},
+    username: { type: String, required: true },
+    email: { type: String, required: true },
+    password: { type: String, required: true},
+    avatar: { type: String, required: true},
+    address: { type: String, required: true},
+    phoneNumber: { type: String, required: true},
     admin: { type: Boolean, required: true },
     class: { type: Class, required: true },
     created_at: { type: Date, required: true, default: Date.now },

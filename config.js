@@ -4,5 +4,9 @@
 module.exports = {
 
     'secret': 'ilovesaltynodejs',
-    'database': 'mongodb://127.0.0.1/SOA-Nodejs'
+    'database': {
+        server: 'localhost',
+        db: 'Pizzanoscope_DB'
+
+    }
 };
