@@ -39,7 +39,7 @@ router.post('/authenticate', function(req, res, next) {
                 // if user is found and password is right
                 // create a token
                 var token = jwt.sign(user, app.get('superSecret'), {
-                    expiresInSeconds: 28800 // expires in 8 hours
+                    expiresIn: 28800 // expires in 8 hours
                 });
 
                 // return the information including token as JSON
@@ -62,8 +62,8 @@ router.post('/authenticate', function(req, res, next) {
 router.use(function(req, res, next) {
 
     // check header or url parameters or post parameters for token
-    var token = req.body.token || req.param('token') || req.headers['x-access-token'];
-
+    var token = req.body.token || req.param('token') || req.headers['token'];
+    console.log(token);
     // decode token
     if (!token && req.path == '/signUp')
         res.render('signUpPage', { title: 'Express' });
@@ -87,7 +87,9 @@ router.use(function(req, res, next) {
 // ---------------------------------------------------------
 // authenticated routes
 // ---------------------------------------------------------
+
 app.use('/users', users);
 app.use('/setup', setup);
+
 
 module.exports = router;
