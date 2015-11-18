@@ -5,11 +5,20 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 
+
+
+router.get('/', function(req, res, next) {
+    //Lien pour la page d'inscription
+    //res.redirect('/sign_up_page');
+    //console.log(req.body.login);
+    res.send('hello');
+});
+
 router.post('/', function(req, res, next) {
     //Lien pour la page d'inscription
     //res.redirect('/sign_up_page');
-    console.log(req.body.login);
-    res.send(req.body.login);
+    res.send(req.body);
+    res.json({rool: 'yolo'});
 });
 
 

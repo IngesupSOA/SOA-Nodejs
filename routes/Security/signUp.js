@@ -7,7 +7,9 @@ var router = express.Router();
 router.get('/', function(req, res, next) {
     //Lien pour la page d'inscription
     //res.redirect('/sign_up_page');
+    //res.write('Hello');
     res.render('sign_up_page', { title: 'Inscription' });
+
 });
 
 
