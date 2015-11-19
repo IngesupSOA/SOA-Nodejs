@@ -8,6 +8,7 @@ var jwt    = require('jsonwebtoken');
 var config = require('./config.js'); // get our config file
 var users = require('./routes/users');
 var setup = require('./routes/setup');
+var order = require('./routes/order');
 //var authenticate = require('./routes/authenticate');
 
 
@@ -59,6 +60,7 @@ router.post('/authenticate', function(req, res, next) {
 // ---------------------------------------------------------
 // route middleware to authenticate and check token
 // ---------------------------------------------------------
+
 router.use(function(req, res, next) {
 
     // check header or url parameters or post parameters for token
@@ -90,6 +92,7 @@ router.use(function(req, res, next) {
 
 app.use('/users', users);
 app.use('/setup', setup);
+app.use('/order', order);
 
 
 module.exports = router;
