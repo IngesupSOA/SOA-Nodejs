@@ -3,7 +3,9 @@
  */
 var mongoose = require('mongoose'),
     bcrypt = require("bcryptjs"),
-    Class = require('./ClassDB');
+    ClassDB = require('./ClassDB');
+
+var Class = mongoose.model('Class');
 
 var Schema = mongoose.Schema;
 
@@ -18,7 +20,7 @@ var User = new Schema({
     address: { type: String, required: true},
     phoneNumber: { type: String, required: true},
     admin: { type: Boolean, required: true },
-    class: { type: Class, required: true },
+    class: { type: Schema.ObjectId, ref: 'Class', required: true },
     created_at: { type: Date, required: true, default: Date.now },
     updated_at: { type: Date, required: true, default: Date.now }
 });
@@ -27,7 +29,7 @@ User.pre('save', function (next) {
     var user = this;
     var now = new Date();
 
-    //mis à jour élément de controle(Created_at, Updated_at)
+    //mis ï¿½ jour ï¿½lï¿½ment de controle(Created_at, Updated_at)
     this.updated_at = now;
     if ( !this.created_at ) {
         this.created_at = now;

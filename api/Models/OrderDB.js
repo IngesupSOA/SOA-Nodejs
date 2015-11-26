@@ -4,13 +4,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var User = require('./UserDB');
-var Pizza = require('./PizzaDB')
+//var UserDB = require('./UserDB');
+var PizzaDB = require('./PizzaDB');
+
+var User = mongoose.model('User');
+var Pizza = mongoose.model('Pizza');
 
 
 var Order = new Schema({
-    pizzaList: { type: [Pizza], required: true },
-    user: { type: User, required: true },
+    pizzaList: { type: [{type: Schema.ObjectId, ref: 'Pizza'}], required: true },
+    user: { type: Schema.ObjectId, ref: 'User', required: true },
     state: { type: String, required: true, trim: true },
     paymentType: { type: String, required: true, trim: true },
     created_at: { type: Date, required: true, default: Date.now },
