@@ -6,7 +6,7 @@
 var debug = require('debug')('app:utils:' + process.pid),
     path = require('path'),
     util = require('util'),
-    Cookie = require("cookies").Cookie,
+    Cookies = require("cookies"),
     uuid = require('uuid'),
     nJwt = require('nJwt'),
     secretKey = uuid.v4(),
@@ -25,9 +25,9 @@ module.exports.create = function (user, req, res, next) {
     //Creating claims to build token
     var claims = {
         sub: user._id,
-        iss: 'https://localhost/api',
+        iss: 'http://localhost/api',
         //TODO Handle permissions to set them accordingly to the user trying to connect
-        permissions: 'authenticate login users default verify'
+        scope: 'self api/users api/login api/verify'
     };
     console.log("Creating token...");
     var jwt = nJwt.create(claims, secretKey);
@@ -35,22 +35,15 @@ module.exports.create = function (user, req, res, next) {
     var token = jwt.compact();
     console.log("--> Token generated %s:", token);
 
-    var data = {
-        _id: user._id,
-        username: user.username,
-        access: user.access,
-        name: user.name,
-        email: user.email,
-        token: token
-    };
 
-    new Cookies(req, res).set('access_token', data.token, {
+    new Cookies(req, res).set('access_token', token, {
         httpOnly: true,
         secure: false      // for your dev environment => true for prod
     });
-    console.log("Assigned token into cookie for user %s:", data.username);
-
-    return data;
+    //console.log(req);
+    console.log("Assigned token into cookie for user %s", user.username);
+    //console.log('Data %o',data);
+    return next();
 };
 
 module.exports.verify = function (req, res, next) {
@@ -72,7 +65,7 @@ module.exports.verify = function (req, res, next) {
 };
 
 module.exports.fetch = function (req, res, next) {
-    var token = new Cookie(req, res).get('access_token');
+    var token = new Cookies(req, res).get('access_token');
 
     if (!_.isUndefined(token) && !_.isNull(token)) {
         return next(new NotFoundError("Token not defined or revoked"));
@@ -80,27 +73,28 @@ module.exports.fetch = function (req, res, next) {
     else if (_.isEmpty(token)) {
         return next(new NotFoundError("Invalid token"));
     }
-    else return undefined;
+    else
+        return token;
 };
 
 module.exports.middleware = function () {
-
+console.log("In tokenHandler middleware");
     var func = function (req, res, next) {
 
-        exports.verify(req, res, next, function (err, data) {
+        exports.verify(req, res, next) {
 
             if (err) {
                 req.user = undefined;
                 return next(new UnauthorizedAccessError("invalid_token", data));
             } else {
-                req.user = _.merge(req.user, data);
+                console.log('Token verified: OK');
                 next();
             }
 
         });
     };
 
-    func.unless = require("express-unless");
+    //func.unless = require("express-unless");
 
     return func;
 

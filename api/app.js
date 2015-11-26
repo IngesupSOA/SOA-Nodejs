@@ -7,11 +7,12 @@ var debug = require('debug')('app:' + process.pid),
     https_port = process.env.HTTPS_PORT || 3443,
     jwt = require("express-jwt"),
     config = require("./config.json"),
-    mongoose_uri = process.env.MONGOOSE_URI || "localhost/Pizzanoscope_DB",
+    mongoose_uri = process.env.MONGOOSE_URI || "localhost/express-jwt-auth",
     onFinished = require('on-finished'),
     NotFoundError = require(path.join(__dirname, "errors", "NotFoundError.js")),
     utils = require(path.join(__dirname, "utils.js")),
     unless = require('express-unless');
+//var users = require('./routes/users');
 
 console.log("Starting application");
 
@@ -58,15 +59,16 @@ app.use(function (req, res, next) {
 
 });
 
-var jwtCheck = jwt({
-  secret: config.secret
-});
-jwtCheck.unless = unless;
-
-app.use(jwtCheck.unless({path: '/api/login' }));
-app.use(utils.middleware().unless({path: '/api/login' }));
-
+//var jwtCheck = jwt({
+//  secret: config.secret
+//});
+//jwtCheck.unless = unless;
+//
+//app.use(jwtCheck.unless({path: '/api/login' }));
+//app.use(utils.middleware().unless({path: '/api/login' }));
 app.use("/api", require(path.join(__dirname, "routes", "default.js"))());
+//app.use('/users', users);
+//app.use(utils.middleware().unless({path: '/api/users' }));
 
 // all other requests redirect to 404
 app.all("*", function (req, res, next) {

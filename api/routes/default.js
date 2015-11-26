@@ -7,12 +7,13 @@ var debug = require('debug')('app:routes:default' + process.pid),
     _ = require("lodash"),
     util = require('util'),
     path = require('path'),
-    bcrypt = require('bcryptjs'),
     utils = require("../utils.js"),
+    config = require("../config.js"),
     Router = require("express").Router,
     UnauthorizedAccessError = require(path.join(__dirname, "..", "errors", "UnauthorizedAccessError.js")),
     User = require(path.join(__dirname, "..", "models", "user.js")),
-    jwt = require("express-jwt");
+    jwt = require("express-jwt"),
+    unless = require('express-unless');
 
 var authenticate = function (req, res, next) {
 
@@ -21,36 +22,36 @@ var authenticate = function (req, res, next) {
     var username = req.body.username,
         password = req.body.password;
     console.log(username);
+    console.log(password);
     if (_.isEmpty(username) || _.isEmpty(password)) {
         return next(new UnauthorizedAccessError("401", {
             message: 'Invalid username or password'
         }));
     }
 
-
-
-        User.findOne({
-            username: username
-        }, function (err, user) {
-
-            if (err || !user) {
-                console.log(err.message);
+    User.findOne({
+        username: username
+    }, function (err, user) {
+        console.log(user);
+        if (err || !user) {
+            console.log(err);
+            return next(new UnauthorizedAccessError("401", {
+                message: 'Invalid username or password'
+            }));
+        }
+        user.comparePassword(password, function (err, isMatch) {
+            if (isMatch && !err) {
+                console.log("User authenticated, generating token");
+                utils.create(user, req, res,next);
+                console.log('Token set, going next...');
+                next();
+            } else {
                 return next(new UnauthorizedAccessError("401", {
                     message: 'Invalid username or password'
                 }));
             }
-            console.log("hello");
-            user.comparePassword(password, function (err, isMatch) {
-                if (isMatch && !err) {
-                    console.log("User authenticated, generating token");
-                    utils.create(user, req, res, next);
-                } else {
-                    return next(new UnauthorizedAccessError("401", {
-                        message: 'Invalid username or password'
-                    }));
-                }
-            });
         });
+    });
 
 
 };
@@ -60,7 +61,8 @@ module.exports = function () {
     var router = new Router();
 
     router.route("/verify").get(function (req, res, next) {
-        return res.status(200).json(undefined);
+        router.use(utils.middleware());
+        return res.status(200).json({working:true});
     });
 
     router.route("/logout").get(function (req, res, next) {
@@ -73,14 +75,30 @@ module.exports = function () {
             return next(new UnauthorizedAccessError("401"));
         }
     });
-    router.route("/login").get(function (req, res, next) {
-        return res.render('default', { title: 'Express' });
+    router.route("/login").get(function (req, res) {
+        return res.render('default', {title: 'Express'});
         //res.json({success:true});
     });
 
-    router.route("/login").post(authenticate, function (req, res, next) {
-        return res.status(200).json(req.user);
+    router.route("/login").post(authenticate, function (req, res) {
+        return res.status(200).json({success:true});
     });
+
+    ///* GET users listing. */
+    //router.route("/users").get(function(req, res) {
+    //    router.use(utils.middleware());
+    //    User.
+    //    find().
+    //    exec(function(err, users){
+    //        res.json(users);
+    //    });
+    //});
+
+
+    //router.route("/users").get(function (req, res) {
+    //    return res.render('default', {title: 'Users'});
+    //    //res.json({success:true});
+    //});
 
     router.unless = require("express-unless");
 

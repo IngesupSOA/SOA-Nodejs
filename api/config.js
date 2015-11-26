@@ -6,7 +6,7 @@ module.exports = {
    'secret': 'ilovesaltynodejs',
     'database': {
         server: 'localhost',
-        db: 'Pizzanoscope_DB'
+        db: 'express-jwt-auth'
 
     }
 };
