@@ -17,7 +17,7 @@ var debug = require('debug')('app:utils:' + process.pid),
     UnauthorizedAccessError = require(path.join(__dirname, 'errors', 'UnauthorizedAccessError.js')),
     NotFoundError = require(path.join(__dirname, 'errors', 'NotFoundError.js'));
 
-module.exports.create = function (user, req, res, next) {
+module.exports.createToken = function (user, req, res, next) {
     if (_.isEmpty(user)) {
         return next(new Error('User data cannot be empty.'));
     }
@@ -82,12 +82,13 @@ console.log("In tokenHandler middleware");
     var func = function (req, res, next) {
 
         exports.verify(req, res, next, function (err, token) {
-
+console.log("hello");
             if (err) {
                 req.user = undefined;
+                console.log(err); // Token has expired, has been tampered with, etc
                 return next(new UnauthorizedAccessError("invalid_token", token));
             } else {
-                console.log('Token verified: OK');
+                console.log('Token verified: OK'+token);
                 req.user = _.merge(req.user, token);
                 next();
             }
@@ -95,8 +96,8 @@ console.log("In tokenHandler middleware");
         });
     };
 
-    //func.unless = require("express-unless");
-
+    func.unless = require("express-unless");
+    console.log("hello2");
     return func;
 
 };

@@ -42,7 +42,7 @@ var authenticate = function (req, res, next) {
         user.comparePassword(password, function (err, isMatch) {
             if (isMatch && !err) {
                 console.log("User authenticated, generating token");
-                utils.create(user, req, res,next);
+                utils.createToken(user, req, res,next);
                 console.log('Token set, going next...');
                 next();
             } else {
