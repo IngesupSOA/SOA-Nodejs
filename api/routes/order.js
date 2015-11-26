@@ -13,6 +13,15 @@ var Pizza = mongoose.model('Pizza');
 var User = mongoose.model('User');
 var Class = mongoose.model('Class');
 
+router.get('/', function(req, res, next) {
+    Order.
+    find().
+    exec(function(err, orders){
+        res.json(orders);
+    });
+    //new Cookies(req, res).set("order", "", { httpOnly: true, secure: false });
+});
+
 router.get('/paypal', function(req, res, next) {
     var configSandbox = {
         'mode' : 'sandbox',
@@ -34,8 +43,8 @@ router.get('/paypal', function(req, res, next) {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://localhost:3000/order/success",
-            "cancel_url": "http://localhost:3000/order/success/fail"
+            "return_url": "http://localhost:3000/api/order/success",
+            "cancel_url": "http://localhost:3000/api/order/fail"
         },
         "transactions": [{
             "item_list": {
@@ -72,7 +81,22 @@ router.get('/paypal', function(req, res, next) {
 });
 
 router.get('/success', function(req, res, next) {
-    res.render('orderSuccess');
+    var cookieOrder = new Cookies(req, res).get("order");
+    var cookieJson = JSON.parse(cookieOrder);
+    Order.
+    update({_id: cookieJson._id},
+        {$set: {
+            state: "payed"
+        }},
+        {multi:true}).
+    exec(function(err, order){
+        new Cookies(req, res).set("order", "", { httpOnly: true, secure: false });
+        res.redirect('/api/order/');
+    });
+});
+
+router.get('/fail', function(req, res, next) {
+    res.redirect('/api/order/');
 });
 
 router.get('/initOrder', function(req, res, next) {
