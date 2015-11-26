@@ -3,6 +3,7 @@
  */
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var bcrypt = require("bcryptjs");
 
 var Class = require('./ClassDB');
 
@@ -29,5 +30,14 @@ User.pre('save', function(next){
     }
     next();
 });
+
+User.methods.comparePassword = function (passw, cb) {
+    bcrypt.compare(passw, this.password, function (err, isMatch) {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, isMatch);
+    });
+};
 
 exports.User = mongoose.model('User', User);

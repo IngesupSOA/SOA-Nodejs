@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var User = require('../models/UserDB');
 var User = mongoose.model('User');
 
-router.use(utils.middleware());
+//router.use(utils.middleware());
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {

@@ -1,6 +1,6 @@
 /**
  * Created by Antoine on 24/11/2015.
- */
+ *//*
 "use strict";
 
 var mongoose = require('mongoose'),
@@ -57,4 +57,4 @@ UserSchema.methods.comparePassword = function (passw, cb) {
     });
 };
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);*/

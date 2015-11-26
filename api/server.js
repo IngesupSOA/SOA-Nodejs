@@ -1,6 +1,6 @@
 /**
  * Created by Ezehollar on 18/11/2015.
- */
+ *//*
 var express = require('express');
 var mongoose = require('mongoose');
 var jwt    = require('jsonwebtoken');
@@ -93,3 +93,4 @@ app.use('/setup', setup);
 
 
 module.exports = router;
+*/

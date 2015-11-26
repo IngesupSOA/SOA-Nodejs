@@ -33,7 +33,7 @@ module.exports.createToken = function (user, req, res, next) {
     var jwt = nJwt.create(claims, secretKey);
     jwt.setExpiration(new Date().getTime() + (60 * 60 * 1000)); // One hour from now
     var token = jwt.compact();
-    console.log("--> Token generated %s:", token);
+    //console.log("--> Token generated %s:", token);
 
 
     new Cookies(req, res).set('access_token', token, {
@@ -41,7 +41,7 @@ module.exports.createToken = function (user, req, res, next) {
         secure: false      // for your dev environment => true for prod
     });
     //console.log(req);
-    console.log("Assigned token into cookie for user %s", user.username);
+    //console.log("Assigned token into cookie for user %s", user.username);
     //console.log('Data %o',data);
     return next();
 };
