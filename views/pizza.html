@@ -1,14 +1,6 @@
 <!DOCTYPE html>
-<!--[if IE 7]>
-<html class="ie ie7 no-js" lang="en-US">
-<![endif]-->
-<!--[if IE 8]>
-<html class="ie ie8 no-js" lang="en-US">
-<![endif]-->
-<!--[if !(IE 7) | !(IE 8)  ]><!-->
 <html lang="en" class="no-js">
 <head>
-    <!-- Basic need -->
     <title>Pizzanocope List</title>
     <meta charset="UTF-8">
     <meta name="description" content="">
@@ -16,127 +8,100 @@
     <meta name="author" content="">
     <link rel="profile" href="#">
 
-    <!-- Mobile specific meta -->
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="format-detection" content="telephone-no">
 
-    <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Raleway:300,400,700,900' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Dosis:700' rel='stylesheet' type='text/css'>
 
-    <!-- CSS files -->
-    <link rel="stylesheet" href="../public/css/plugins.css">
-    <link rel="stylesheet" href="../public/css/style.css">
-
-    <!-- JS files -->
-    <script src="../public/js/jquery.js"></script>
+    <link rel="stylesheet" href="/css/plugins.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/jquery.js"></script>
 </head>
 <body>
 
-<div class="ht-page-wrapper">
+    <div class="ht-page-wrapper">
 
-
-    <!-- BEGIN | Header -->
-    <header id="ht-header" class="">
-        <div class="mobile-control-toggle">
-            <div class="container">
-                <button type="button" class="mobile-nav-toggle" data-target="#menu-list">
-                    <span class="sr-only">Toggle mobile menu</span>
-                    <span class="icon-bar icon-bar-1"></span>
-                    <span class="icon-bar icon-bar-2"></span>
-                    <span class="icon-bar icon-bar-3"></span>
-                </button>
+        <header id="ht-header" class="">
+            <div class="mobile-control-toggle">
+                <div class="container">
+                    <button type="button" class="mobile-nav-toggle" data-target="#menu-list">
+                        <span class="sr-only">Toggle mobile menu</span>
+                        <span class="icon-bar icon-bar-1"></span>
+                        <span class="icon-bar icon-bar-2"></span>
+                        <span class="icon-bar icon-bar-3"></span>
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <!-- available classes: logo-center, logo-left -->
-        <div class="ht-main-navbar logo-center sticky-nav scroll-up-nav">
+            <div class="ht-main-navbar logo-center sticky-nav scroll-up-nav">
+                <div class="container">
+                    <div class="inner">
+                        <h1 id="ht-logo">
+                            <a href="#">
+                                Pizzanoscope Logo
+                            </a>
+                            Realty
+                        </h1>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <div class="ht-page-header">
+            <div class="overlay" style="background: rgba(0,0,0,.5)"></div>
             <div class="container">
                 <div class="inner">
-                    <h1 id="ht-logo">
-                        <a href="index.html">
-                            <img src="../public/images/logo.png" alt="">
-                        </a>
-                        Realty
-                    </h1>
+                    <h2 class="heading">Pizzanoscope</h2>
+                    <ol class="ht-breadcrumb">
+                        <li><a href="#">Pizzas</a></li>
+                        <li>List</li>
+                    </ol>
                 </div>
-                <!-- / .inner -->
             </div>
-            <!-- / .container -->
-            <button type="button" class="search-toggle" data-toggle="modal" data-target="#ht-search-form">
-			<span class="inner">
-				<i class="fa fa-search"></i>
-			</span>
-            </button>
-            <!-- ./ button#ht-search-form -->
         </div>
-        <!-- / .ht-container -->
-    </header>
-    <!-- END | Header -->
+
+        <div class="ht-section hs-editors grid">
+            <div class="hs-content">
+                <div class="container">
+                    <div class="row">
+
+                        {% for menu in menus %}
+                            {% for pizza in menu.Products %}
+                                <div class="entry col-xs-12 col-sm-3">
+                                    <div class="entry-media">
+                                        <div class="thumb">
+                                            <img src="http://image.dominos.fr/images/pizza/{{ pizza.LinkedItem.ItemCode }}detail.png" alt="">
+                                        </div>
+                                    </div>
+                                    <h3 class="entry-name">{{ pizza.Name }}</h3>
+                                    <p class="entry-position">{{ pizza.Price.Delivered }}</p>
+                                    <div class="entry-social">
+                                        <div class="entry-social-inner">
+                                            <a href="" class="fa fa-shopping-basket"></a>
+                                            <a href="" class="fa fa-twitter">test test</a>
+                                            <a href="" class="fa fa-youtube"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
 
 
-    <div class="ht-page-header" style="background-image: url('../public/images/parallax/2.jpg')">
-        <div class="overlay" style="background: rgba(0,0,0,.5)"></div>
-        <div class="container">
-            <div class="inner">
-                <h2 class="heading">PAGE HEADER</h2>
-                <ol class="ht-breadcrumb">
-                    <li><a href="#">Pizzas</a></li>
-                    <li>Crumb</li>
-                </ol>
-            </div>
-            <!-- / .inner -->
-        </div>
-        <!-- / .container -->
-    </div>
-    <!-- / .ht-page-header -->
-
-    <div class="ht-section hs-editors grid">
-        <div class="hs-content">
-            <div class="container">
-                <div class="post-content-area">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore odit nisi quasi aut veniam voluptatum accusantium nostrum eos cupiditate perferendis esse ab, velit molestiae itaque, cumque sequi libero dolor ullam! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel fuga odit ex. Labore blanditiis voluptatem, impedit accusamus delectus ipsam, distinctio repellat tempore porro exercitationem dolorum explicabo ratione esse accusantium maiores.
-                    <br><br>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempore odit nisi quasi aut veniam voluptatum accusantium nostrum eos cupiditate perferendis esse ab, velit molestiae itaque, cumque sequi libero dolor ullam! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel fuga odit ex. Labore blanditiis voluptatem, impedit accusamus delectus ipsam, distinctio repellat tempore porro exercitationem dolorum explicabo ratione esse accusantium maiores.
-                </div>
-                <!-- ./ post-content-area -->
-                <div class="row">
-                    <div class="entry">
-                        <div class="entry-media">
-                            <div class="thumb">
-                                <img src="../public/images/author/50.jpg" alt="">
-                            </div>
-                        </div>
-                        <h3 class="entry-name">4 Fromages</h3>
-                        <p class="entry-position">$ 10</p>
-                        <div class="entry-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio vitae dolores quasi eum molestiae porro praesentium quo a sint, ipsum cupiditate, suscipit dolorem doloremque cum atque soluta facilis? Eos, officiis.</div>
-                        <div class="entry-social">
-                            <div class="entry-social-inner">
-                                <a href="" class="fa fa-facebook"></a>
-                                <a href="" class="fa fa-twitter"></a>
-                                <a href="" class="fa fa-youtube"></a>
-                            </div>
-                        </div>
                     </div>
-                    <!-- /.entry -->
                 </div>
             </div>
-            <!-- /.container -->
         </div>
+
+        <footer id="ht-footer">
+            <div class="container">
+                <p class="copyright">COPYRIGHT © PIZZANOSCOPE </p>
+            </div>
+        </footer>
+
     </div>
-    <!-- / .hs-recipe -->
 
-    <footer id="ht-footer">
-        <div class="container">
-            <p class="copyright">COPYRIGHT © {{ date|now }} PIZZANOSCOPE </p>
-        </div>
-    </footer>
-
-
-</div>
-
-<script src="../public/js/plugins.js"></script>
-<script src="../public/js/custom.js"></script>
-
+    <script src="/js/custom.js"></script>
 </body>
 </html>

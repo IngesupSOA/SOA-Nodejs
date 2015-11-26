@@ -8,8 +8,8 @@ var swig = require('swig');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var pizza = require('./routes/pizza');
-
 var app = express();
+
 
 // This is where all the magic happens!
 app.engine('html', swig.renderFile);
