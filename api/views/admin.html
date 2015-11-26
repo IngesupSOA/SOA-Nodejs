@@ -22,6 +22,7 @@
 
 <div class="ht-page-wrapper">
 
+
     <header id="ht-header" class="">
         <div class="mobile-control-toggle">
             <div class="container">
@@ -61,10 +62,12 @@
                     <div class="ht-main-nav-wrapper">
                         <nav id="ht-main-nav">
                             <ul>
-                                <li><a href="#"></a></li>
+                                <li><a href="/api/pizza/">Pizzas</a></li>
+                                <li><a href="/api/users/">Users</a></li>
                             </ul>
                             <ul>
-                                <li><a href="#"></a></li>
+                                <li><a href="#">Admin</a></li>
+                                <li><a href="/api/logout">Logout</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -72,7 +75,6 @@
             </div>
         </div></div>
     </header>
-
 
     <div class="ht-page-header">
         <div class="overlay" style="background: rgba(0,0,0,.5)"></div>
@@ -87,60 +89,17 @@
         </div>
     </div>
 
-    <section class="ht-section hs-recipes grid">
+    <div class="ht-section hs-editors grid">
         <div class="hs-content">
             <div class="container">
                 <div class="row">
-                    <div class="login-form col-md-offset-2 col-md-8 ">
 
-                        <h2>Login</h2>
-                        <form name="loginform" id="loginform" action="/api/login" method="post">
+                    <p>content goes here</p>
 
-                            <p class="login-username">
-                                <label for="login_username">Username</label>
-                                <input type="text" name="username" id="login_username" class="input" value="" size="20" placeholder="Your Username">
-                            </p>
-                            <p class="login-password">
-                                <label for="login_password">Password</label>
-                                <input type="password" name="password" id="login_password" class="input" value="" size="20" placeholder="Your password">
-                            </p>
-
-                            <p class="login-remember">
-                                <label>
-                                    <input name="rememberme" type="checkbox" id="rememberme" value="forever"> Remember Me
-                                </label></p>
-                            <p class="login-submit">
-                                <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Log In">
-                            </p>
-
-                        </form>
-                    </div>
-                </div><!--./row-->
-
-                <div class="row">
-                    <div class="register-form col-md-offset-2 col-md-8 ">
-                        <div class="title">
-                            <h2>Register</h2>
-                            <p class="register_warning">If you don't have account yet And a password will be e-mailed to you.</p>
-                        </div>
-                        <form action="#" method="post">
-                            <p>
-                                <label>Username</label>
-                                <input type="text" name="user" value="Username" id="user" class="input">
-                            </p>
-                            <p>
-                                <label>Email</label>
-                                <input type="text" name="email" value="E-Mail" id="email" class="input">
-                            </p>
-                            <p>
-                                <input type="submit" value="Register" id="register" class="button-primary">
-                            </p>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
     <footer id="ht-footer">
         <div class="container">
@@ -148,10 +107,8 @@
         </div>
     </footer>
 
-
 </div>
 
 <script src="/js/custom.js"></script>
-
 </body>
 </html>
