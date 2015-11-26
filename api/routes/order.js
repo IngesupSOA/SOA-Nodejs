@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
 var paypal = require('paypal-rest-sdk');
+var cookies = require("cookies");
+
+//var orderDB = require('./Models/OrderDB');
 
 router.get('/paypal', function(req, res, next) {
     var configSandbox = {
-            'mode' : 'sandbox',
-            'client_id' : 'ARfucPqNEtupis2zq9BubXeUs5n6CEPZAbs7fz5nGqZorhvg0yJWhUf6sPVUy8qjQRiWfcWsvD-S2_1b',
-            'client_secret' : 'EPaERZ8uHaNr4RUQTX48_6kSf7nuTEvknDM27fawwg0bU7saeQnO-SQJNHrGDX5cQT9waV-uartGM0rV'
+        'mode' : 'sandbox',
+        'client_id' : 'ARfucPqNEtupis2zq9BubXeUs5n6CEPZAbs7fz5nGqZorhvg0yJWhUf6sPVUy8qjQRiWfcWsvD-S2_1b',
+        'client_secret' : 'EPaERZ8uHaNr4RUQTX48_6kSf7nuTEvknDM27fawwg0bU7saeQnO-SQJNHrGDX5cQT9waV-uartGM0rV'
     };
 
     var configLive = {
@@ -15,7 +18,7 @@ router.get('/paypal', function(req, res, next) {
         'client_secret' : 'EFUHUkFmATKtn-MIaXq-gYpUIJI8mdFV0mB_EYvT_eDXvXeKoODVEB7-OwPu-BoTksA2S2PGM3nK2toN'
     };
 
-    paypal.configure(configLive);
+    paypal.configure(configSandbox);
 
     var paymentDescription = {
         "intent": "sale",
@@ -23,41 +26,24 @@ router.get('/paypal', function(req, res, next) {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://return.url",
-            "cancel_url": "http://cancel.url"
+            "return_url": "http://localhost:3000/order/success",
+            "cancel_url": "http://localhost:3000/order/success/fail"
         },
         "transactions": [{
             "item_list": {
-                "items": [{
-                    "name": "item",
-                    "sku": "item",
-                    "price": "1.00",
-                    "currency": "USD",
-                    "quantity": 1
-                }]
+                "items": []
             },
             "amount": {
-                "currency": "USD",
-                "total": "1.00"
+                "currency": "EUR",
+                "total": "0.00"
             },
-            "description": "This is the payment description."
+            "description": "Votre commande de pizza."
         }]
     };
 
-    //Ajout d'un objet à la commande
-    paymentDescription.transactions[0].item_list.items.push({
-        "name": "item",
-        "sku": "item",
-        "price": "1.00",
-        "currency": "USD",
-        "quantity": 1
-    });
+    parseOrderPaypalJson(paymentDescription, cookies.get("order"));
 
-    //Mise à jour du total
-    paymentDescription.transactions[0].amount.total = "2.00";
-
-
-    paypal.payment.create(paymentDescription, configLive, function(error, payment){
+    paypal.payment.create(paymentDescription, configSandbox, function(error, payment){
         if (error) {
             console.log(error);
         } else {
@@ -75,5 +61,26 @@ router.get('/paypal', function(req, res, next) {
         }
     });
 });
+
+router.get('/success', function(req, res, next) {
+    res.render('orderSuccess');
+});
+
+function parseOrderPaypalJson(paymentDescription, order){
+    var total = 0;
+    for(var pizza in order.pizzaList){
+        paymentDescription.transactions[0].item_list.items.push({
+            "name": pizza.name + " " + pizza.sizeType + " " + pizza.doughType,
+            "sku": pizza.name,
+            "price": pizza.price,
+            "currency": "EUR",
+            "quantity": 1
+        });
+
+        total += pizza.price;
+
+        paymentDescription.transactions[0].amount.total = total;
+    }
+}
 
 module.exports = router;
