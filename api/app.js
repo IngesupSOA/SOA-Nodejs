@@ -9,7 +9,9 @@ var debug = require('debug')('app:' + process.pid),
     onFinished = require('on-finished'),
     NotFoundError = require(path.join(__dirname, "errors", "NotFoundError.js")),
     users = require('./routes/users'),
-    signUp = require('./routes/signUp');
+    signUp = require('./routes/signUp'),
+    pizza = require('./routes/pizza');
+
 
 console.log("Starting application");
 
@@ -60,6 +62,7 @@ app.use(function (req, res, next) {
 app.use("/api", require(path.join(__dirname, "routes", "default.js"))());
 app.use("/api/users", users);
 app.use("/api/signUp", signUp);
+app.use('/api/pizza', pizza);
 
 // all other requests redirect to 404
 app.all("*", function (req, res, next) {
