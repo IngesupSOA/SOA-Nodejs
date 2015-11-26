@@ -7,8 +7,8 @@ var debug = require('debug')('app:routes:default' + process.pid),
     _ = require("lodash"),
     util = require('util'),
     path = require('path'),
-    utils = require("../utils.js"),
-    config = require("../config.js"),
+    utils = require("../Utils/utils.js"),
+    config = require("../Utils/config.js"),
     Router = require("express").Router,
     UnauthorizedAccessError = require(path.join(__dirname, "..", "errors", "UnauthorizedAccessError.js")),
     //User = require(path.join(__dirname, "..", "models", "userDB.js")),
@@ -62,8 +62,6 @@ module.exports = function () {
 
     var router = new Router();
 
-
-
     router.route("/logout").get(function (req, res, next) {
         if (utils.expire(req.headers)) {
             delete req.user;
@@ -76,27 +74,19 @@ module.exports = function () {
     });
     router.route("/login").get(function (req, res) {
         return res.render('default', {title: 'Express'});
-        //res.json({success:true});
     });
+
 
     router.route("/login").post(authenticate, function (req, res) {
+        //router.use(utils.middleware());
         return res.redirect('/api/users/');
-            //return res.status(200).json({success:true});
     });
+
 
     router.route("/verify").get(function (req, res, next) {
-        router.use(utils.middleware());
+        //router.use(utils.middleware());
         return res.status(200).json({working:true});
     });
-
-    /*
-    router.route("/users").get(function(req, res) {
-       User.
-        find().
-        exec(function(err, users){
-            res.json(users);
-        });
-    });*/
 
 
 

@@ -5,14 +5,11 @@ var debug = require('debug')('app:' + process.pid),
     fs = require("fs"),
     http_port = process.env.HTTP_PORT || 3000,
     https_port = process.env.HTTPS_PORT || 3443,
-    jwt = require("express-jwt"),
-    config = require("./config.json"),
     mongoose_uri = process.env.MONGOOSE_URI || "localhost/express-jwt-auth",
     onFinished = require('on-finished'),
     NotFoundError = require(path.join(__dirname, "errors", "NotFoundError.js")),
-    utils = require(path.join(__dirname, "utils.js")),
-    unless = require('express-unless'),
-    users = require('./routes/users');
+    users = require('./routes/users'),
+    signUp = require('./routes/signUp');
 
 console.log("Starting application");
 
@@ -59,16 +56,10 @@ app.use(function (req, res, next) {
 
 });
 
-//var jwtCheck = jwt({
-//  secret: config.secret
-//});
-//jwtCheck.unless = unless;
-//
-//app.use(jwtCheck.unless({path: '/api/login' }));
-//app.use(utils.middleware().unless({path: '/api/login' }));
+//ROUTING
 app.use("/api", require(path.join(__dirname, "routes", "default.js"))());
 app.use("/api/users", users);
-//app.use(utils.middleware().unless({path: '/api/users' }));
+app.use("/api/signUp", signUp);
 
 // all other requests redirect to 404
 app.all("*", function (req, res, next) {

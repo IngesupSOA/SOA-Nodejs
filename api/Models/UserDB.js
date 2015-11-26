@@ -1,11 +1,12 @@
 /**
  * Created by Ezehollar on 13/11/2015.
  */
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require("bcryptjs");
+var mongoose = require('mongoose'),
+    bcrypt = require("bcryptjs"),
+    Class = require('./ClassDB');
 
-var Class = require('./ClassDB');
+var Schema = mongoose.Schema;
+
 
 var User = new Schema({
     firstname: { type: String, required: true},
@@ -22,13 +23,32 @@ var User = new Schema({
     updated_at: { type: Date, required: true, default: Date.now }
 });
 
-User.pre('save', function(next){
+User.pre('save', function (next) {
+    var user = this;
     var now = new Date();
+
+    //mis à jour élément de controle(Created_at, Updated_at)
     this.updated_at = now;
     if ( !this.created_at ) {
         this.created_at = now;
     }
-    next();
+
+    if (this.isModified('password') || this.isNew) {
+        bcrypt.genSalt(10, function (err, salt) {
+            if (err) {
+                return next(err);
+            }
+            bcrypt.hash(user.password, salt, function (err, hash) {
+                if (err) {
+                    return next(err);
+                }
+                user.password = hash;
+                next();
+            });
+        });
+    } else {
+        return next();
+    }
 });
 
 User.methods.comparePassword = function (passw, cb) {

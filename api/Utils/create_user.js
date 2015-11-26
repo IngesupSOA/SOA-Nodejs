@@ -2,7 +2,7 @@
  * Created by Antoine on 24/11/2015.
  */
 var path = require("path"),
-    config = require("./config.json"),
+    config = require("./../config.json"),
     User = require(path.join(__dirname, "models", "user.js")),
     mongoose_uri = process.env.MONGOOSE_URI || "localhost/express-jwt-auth";
 

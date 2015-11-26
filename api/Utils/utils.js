@@ -14,8 +14,8 @@ var debug = require('debug')('app:utils:' + process.pid),
 
     TOKEN_EXPIRATION = 60 * 60,
     TOKEN_EXPIRATION_SEC = TOKEN_EXPIRATION * 60,
-    UnauthorizedAccessError = require(path.join(__dirname, 'errors', 'UnauthorizedAccessError.js')),
-    NotFoundError = require(path.join(__dirname, 'errors', 'NotFoundError.js'));
+    UnauthorizedAccessError = require('../errors/UnauthorizedAccessError.js'),
+    NotFoundError = require('../errors/NotFoundError.js');
 
 module.exports.createToken = function (user, req, res, next) {
     if (_.isEmpty(user)) {
@@ -29,20 +29,15 @@ module.exports.createToken = function (user, req, res, next) {
         //TODO Handle permissions to set them accordingly to the user trying to connect
         scope: 'self api/users api/login api/verify'
     };
-    console.log("Creating token...");
     var jwt = nJwt.create(claims, secretKey);
     jwt.setExpiration(new Date().getTime() + (60 * 60 * 1000)); // One hour from now
     var token = jwt.compact();
-    //console.log("--> Token generated %s:", token);
 
 
     new Cookies(req, res).set('access_token', token, {
         httpOnly: true,
         secure: false      // for your dev environment => true for prod
     });
-    //console.log(req);
-    //console.log("Assigned token into cookie for user %s", user.username);
-    //console.log('Data %o',data);
     return next();
 };
 

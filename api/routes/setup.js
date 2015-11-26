@@ -10,7 +10,7 @@ var User = mongoose.model('User');
 //console.log(User);
 var Class = mongoose.model('Class');
 
-router.get('/', function(req, res, next) {
+router.get('/setup', function(req, res, next) {
     //res.render('setup', { title: 'Setup Page' });
         // create a sample user
     var class1 = new Class({
