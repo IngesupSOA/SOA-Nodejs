@@ -81,13 +81,14 @@ module.exports.middleware = function () {
 console.log("In tokenHandler middleware");
     var func = function (req, res, next) {
 
-        exports.verify(req, res, next) {
+        exports.verify(req, res, next, function (err, token) {
 
             if (err) {
                 req.user = undefined;
-                return next(new UnauthorizedAccessError("invalid_token", data));
+                return next(new UnauthorizedAccessError("invalid_token", token));
             } else {
                 console.log('Token verified: OK');
+                req.user = _.merge(req.user, token);
                 next();
             }
 
