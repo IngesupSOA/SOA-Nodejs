@@ -38,6 +38,8 @@ module.exports.createToken = function (user, req, res, next) {
         httpOnly: true,
         secure: false      // for your dev environment => true for prod
     });
+
+
     return next();
 };
 
