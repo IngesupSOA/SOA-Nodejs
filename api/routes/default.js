@@ -65,14 +65,8 @@ module.exports = function () {
     var router = new Router();
 
     router.route("/logout").get(function (req, res, next) {
-        if (utils.expire(req.headers)) {
-            delete req.user;
-            return res.status(200).json({
-                "message": "User has been successfully logged out"
-            });
-        } else {
-            return next(new UnauthorizedAccessError("401"));
-        }
+        res.clearCookie('access_token');
+        return res.redirect('/api/login/');
     });
     router.route("/login").get(function (req, res) {
         return res.render('login', {title: 'Login'});
