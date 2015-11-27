@@ -11,7 +11,8 @@ var debug = require('debug')('app:' + process.pid),
     users = require('./routes/users'),
     signUp = require('./routes/signUp'),
     pizza = require('./routes/pizza'),
-    order = require('./routes/order');
+    order = require('./routes/order'),
+    admin = require('./routes/admin');
 
 
 console.log("Starting application");
@@ -66,6 +67,7 @@ app.use("/api/users", users);
 app.use("/api/signUp", signUp);
 app.use('/api/pizza', pizza);
 app.use('/api/order', order);
+app.use('/api/admin', admin);
 
 // all other requests redirect to 404
 app.all("*", function (req, res, next) {
