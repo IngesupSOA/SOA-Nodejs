@@ -91,6 +91,11 @@ module.exports = function () {
         return res.status(200).json({working:true});
     });
 
+    router.route("/index").get(function (req, res, next) {
+        //router.use(utils.middleware());
+        return res.render('index', {title: 'Accueil'});
+    });
+
 
 
 

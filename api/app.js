@@ -11,7 +11,7 @@ var debug = require('debug')('app:' + process.pid),
     users = require('./routes/users'),
     signUp = require('./routes/signUp'),
     pizza = require('./routes/pizza'),
-    order = require('./routes/order'),
+    orders = require('./routes/orders'),
     admin = require('./routes/admin');
 
 
@@ -66,7 +66,7 @@ app.use("/api", require(path.join(__dirname, "routes", "default.js"))());
 app.use("/api/users", users);
 app.use("/api/signUp", signUp);
 app.use('/api/pizza', pizza);
-app.use('/api/order', order);
+app.use('/api/orders', orders);
 app.use('/api/admin', admin);
 
 // all other requests redirect to 404

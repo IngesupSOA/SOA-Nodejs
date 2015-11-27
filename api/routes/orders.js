@@ -91,13 +91,14 @@ router.get('/success', function(req, res, next) {
         }},
         {multi:true}).
     exec(function(err, order){
+
         new Cookies(req, res).set("order", "", { httpOnly: true, secure: false });
         res.redirect('/api/order/');
     });
 });
 
 router.get('/fail', function(req, res, next) {
-    res.redirect('/api/order/');
+    res.redirect('/api/orders/');
 });
 
 router.get('/initOrder', function(req, res, next) {
