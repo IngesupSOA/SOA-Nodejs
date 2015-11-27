@@ -1,25 +1,23 @@
 /**
  * Created by Ezehollar on 26/11/2015.
  */
-
+var mongoose = require('mongoose');
+var Order = require('../Models/OrderDB');
 var Order = mongoose.model('Order');
 var Pizza = mongoose.model('Pizza');
 var User = mongoose.model('User');
 var Class = mongoose.model('Class');
 
 
-module.exports.addPizzaIntoOrder = function (pizza, order, req, res) {
+module.exports.addPizzaIntoOrder = function (pizza, JsonOrder, req, res) {
 
-    /*Order.findOne({
-            _id: order._id
-        }, function (err, user) {
-            //console.log(user);
-            if (err || !user) {
-                console.log(err);
-                return next(new UnauthorizedAccessError("401", {
-                    message: 'Invalid username or password'
-                }));
-            }
-    var order1;*/
+    var cookieJson = JSON.parse(JsonOrder);
+
+    Order.update({
+            _id: cookieJson._id
+        }, function (err, order) {
+            console.log(order);
+            });
     return order;
 };
+

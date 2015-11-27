@@ -43,6 +43,18 @@ module.exports.createToken = function (user, req, res, next) {
     return next();
 };
 
+
+module.exports.creatCookie = function (cookieName, Object, req, res, next) {
+
+    new Cookies(req, res).set(cookieName, JSON.stringify(Object), {
+        httpOnly: true,
+        secure: false      // for your dev environment => true for prod
+    });
+
+
+    return next();
+};
+
 module.exports.verify = function (req, res, next) {
 
     console.log("Verifying token");

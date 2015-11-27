@@ -2,8 +2,8 @@ var express = require('express'),
     mongoose = require('mongoose'),
     User = require('../models/UserDB'),
     User = mongoose.model('User'),
-    Class = mongoose.model('Class');
-
+    Class = mongoose.model('Class'),
+    Cookies = require("cookies");
 var router = express.Router();
 
 /* GET users listing. */
@@ -17,11 +17,14 @@ router.get('/', function(req, res, next) {
 
 // TODO: Get current user
 router.get('/profile', function(req, res, next) {
-    User.
-    find().
-    exec(function(err, users){
-        res.render('profile', { user : users[0] });
+    var cookieUser = new Cookies(req, res).get("user");
+    User.findOne({
+        _id: cookieUser
+    }, function (err, user) {
+        //console.log(user);
+         res.render('profile', { user : user });
     });
+
 });
 
 

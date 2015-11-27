@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var router = express.Router();
 var paypal = require('paypal-rest-sdk');
 var Cookies = require("cookies");
+var UtilsOrder = require('../Utils/orderUtils');
 
 var OrderDB = require('../Models/OrderDB');
 var PizzaDB = require('../Models/PizzaDB');
@@ -162,5 +163,31 @@ function parseOrderPaypalJson(paymentDescription, order){
         paymentDescription.transactions[0].amount.total = total;
     }
 }
+
+router.get('/addPizza', function(req, res, next) {
+    if(new Cookies(req, res).get("order") == undefined || new Cookies(req, res).get("order") == null) {
+        var USerJson = JSON.parse(new Cookies(req, res).get("user"));
+        //IF order is not create, create a new order
+        var order = new Order({
+            "pizzaList": [],
+            "user": USerJson,
+            "state": "notPayed",
+            "paymentType": "Default"
+        });
+        //création du cookie
+        new Cookies(req, res).set('order', JSON.stringify(order), {
+            httpOnly: true,
+            secure: false      // for your dev environment => true for prod
+        });
+        //Ajout de la pizza
+        UtilsOrder.addPizzaIntoOrder('', new Cookies(req, res).get("order"));
+        order.save();
+        return res.render('pizza');
+    }
+    else {
+        UtilsOrder.addPizzaIntoOrder('', new Cookies(req, res).get("order"));
+        return res.render('pizza');
+    }
+});
 
 module.exports = router;

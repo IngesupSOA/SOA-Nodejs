@@ -17,6 +17,7 @@ var debug = require('debug')('app:routes:default' + process.pid),
     //User = require(path.join(__dirname, "..", "models", "userDB.js")),
     User = mongoose.model('User'),
     jwt = require("express-jwt"),
+    Cookies = require("cookies"),
     unless = require('express-unless');
 
 var authenticate = function (req, res, next) {
@@ -46,9 +47,15 @@ var authenticate = function (req, res, next) {
 
         user.comparePassword(password, function (err, isMatch) {
             if (isMatch && !err) {
-                console.log("User authenticated, generating token");
+
+                new Cookies(req, res).set('user', user._id, {
+                    httpOnly: true,
+                    secure: false      // for your dev environment => true for prod
+                });
+
+                //console.log("User authenticated, generating token");
                 utils.createToken(user, req, res,next);
-                console.log('Token set, going next...');
+                //console.log('Token set, going next...');
                 next();
             } else {
                 return next(new UnauthorizedAccessError("401", {
