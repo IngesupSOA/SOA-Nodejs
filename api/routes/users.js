@@ -15,6 +15,17 @@ router.get('/', function(req, res, next) {
       });
 });
 
+// TODO: Get current user
+router.get('/profile', function(req, res, next) {
+    User.
+    find().
+    exec(function(err, users){
+        res.render('profile', { user : users[0] });
+    });
+});
+
+
+
 /* DELETE user */
 router.get('/del/:value', function(req, res, next){
   console.log(req.params.value);
@@ -35,7 +46,7 @@ router.get('/setup', function(req, res, next) {
     // create a sample user
     var class1 = new Class({
         name: 'Expert 1',
-        school: 'Ingésup Lyon',
+        school: 'Ingesup Lyon',
         created_on: Date.now(),
         updated_at: Date.now()
     })

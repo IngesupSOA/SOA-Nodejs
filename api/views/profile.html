@@ -64,7 +64,7 @@
                             <nav id="ht-main-nav">
                                 <ul>
                                     <li><a href="/api/pizza/">Pizzas</a></li>
-                                    <li><a href="/api/users/">Users</a></li>
+                                    <li><a href="/api/users/profile">Profile</a></li>
                                 </ul>
                                 <ul>
                                     <li><a href="#">Admin</a></li>
@@ -100,30 +100,31 @@
                         <div class="ht-form-block">
                             <div class="text-center">
                                 <h3 class="heading">User settings</h3>
+                                <p>Hey {{ user.lastname }}, wassup ?</p>
                             </div>
                             <form action="#">
                                 <div class="row">
                                     <div class="form-group col-xs-12 col-sm-4">
                                         <label for="firstname">First name</label>
-                                        <input id="firstname" name="firstname" type="text">
+                                        <input id="firstname" name="firstname" type="text" value="{{ user.firstname }}">
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-4">
                                         <label for="lastname">Last name</label>
-                                        <input id="lastname" name="lastname" type="text">
+                                        <input id="lastname" name="lastname" type="text" value="{{ user.lastname }}">
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-4">
                                         <label for="username">User name</label>
-                                        <input id="username" name="username" type="text">
+                                        <input id="username" name="username" type="text" value="{{ user.username }}">
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-xs-12 col-sm-6">
                                         <label for="email">Email</label>
-                                        <input id="email" name="email" type="email">
+                                        <input id="email" name="email" type="email" value="{{ user.email }}">
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6">
                                         <label for="password">Password</label>
-                                        <input id="password" name="password" type="password">
+                                        <input id="password" name="password" type="password" value="*******">
                                     </div>
                                 </div>
                                 <div class="form-group submit-group">
@@ -142,7 +143,7 @@
 
     <footer id="ht-footer">
         <div class="container">
-            <p class="copyright">Workout © INFOSUP - Y-nov </p>
+            <p class="copyright">Pizzanoscope © INGESUP - Y-nov </p>
         </div>
     </footer>
 
