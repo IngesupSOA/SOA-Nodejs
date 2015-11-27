@@ -4784,6 +4784,15 @@ dd {
 
 /* 2.8.6 LAYOUT > POSTS > Sidebar widgets
 ---------------------------------------*/
+.ht-sidebar {
+  position: fixed;
+  width: 200px;
+  float: right;
+  margin-right: 0px;
+  right: 10px;
+  z-index: 999;
+  background-color: rgb(163, 169, 166);
+}
 .ht-widget {
   margin-bottom: 30px;
 }

@@ -7,17 +7,22 @@ var Order = mongoose.model('Order');
 var Pizza = mongoose.model('Pizza');
 var User = mongoose.model('User');
 var Class = mongoose.model('Class');
+var Cookies = require("cookies");
 
+module.exports.addPizzaIntoOrder = function (pizza, orderToUpdate, req, res) {
 
-module.exports.addPizzaIntoOrder = function (pizza, JsonOrder, req, res) {
+    var PizzaListTemp = orderToUpdate.pizzaList;
+    PizzaListTemp.push(pizza);
 
-    var cookieJson = JSON.parse(JsonOrder);
+    Order.findOneAndUpdate(
+          {_id: orderToUpdate._id}
+        , {updated_at: Date.now(),
+            pizzaList: PizzaListTemp
+        }
+        , {w:1}, function(err, order) {
+            if (err) throw err;
+        });
 
-    Order.update({
-            _id: cookieJson._id
-        }, function (err, order) {
-            console.log(order);
-            });
-    return order;
+    return orderToUpdate;
 };
 

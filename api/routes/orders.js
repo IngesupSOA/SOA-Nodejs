@@ -166,28 +166,61 @@ function parseOrderPaypalJson(paymentDescription, order){
 }
 
 router.get('/addPizza', function(req, res, next) {
-    if(new Cookies(req, res).get("order") == undefined || new Cookies(req, res).get("order") == null) {
-        var USerJson = JSON.parse(new Cookies(req, res).get("user"));
+    var cookieJson = new Cookies(req, res).get("order");
+
+    var pizza1 = new Pizza({
+        name: "Pizza 1",
+        description: "Desc Pizza 1",
+        price: 10,
+        sizeType: "Normal",
+        doughType: "Fine"
+    });
+
+    var pizza2 = new Pizza({
+        name: "Pizza 2",
+        description: "Desc Pizza 2",
+        price: 12,
+        sizeType: "Normal",
+        doughType: "Fine"
+    });
+
+    if(cookieJson == undefined || cookieJson == null) {
+        console.log('----------------createdOrder------------');
+        var userJson = JSON.parse(new Cookies(req, res).get("user"));
+
         //IF order is not create, create a new order
-        var order = new Order({
-            "pizzaList": [],
-            "user": USerJson,
-            "state": "notPayed",
-            "paymentType": "Default"
+        var orderToInsert = new Order({
+            "pizzaList": [pizza1],
+            "user": userJson,
+            "state": "XXXXXXXX",
+            "paymentType": "XXXXXXXXX"
         });
-        //création du cookie
-        new Cookies(req, res).set('order', JSON.stringify(order), {
+
+        orderToInsert.save( function(err, order) {
+                if(err)
+                    console.log(err.message+ " -- PAS OK !!");
+                else
+                    console.log('ok');
+            } );
+        console.log('----------------createdOrder1------------');
+
+        new Cookies(req, res).set('order', JSON.stringify(orderToInsert), {
             httpOnly: true,
             secure: false      // for your dev environment => true for prod
         });
-        //Ajout de la pizza
-        UtilsOrder.addPizzaIntoOrder('', new Cookies(req, res).get("order"));
-        order.save();
-        return res.render('pizza');
+
+        return res.redirect('/api/pizza');
     }
     else {
-        UtilsOrder.addPizzaIntoOrder('', new Cookies(req, res).get("order"));
-        return res.render('pizza');
+        console.log('------------insert Pizza----------------');
+        //Ajout de la pizza
+        var UpdatedOrder = UtilsOrder.addPizzaIntoOrder(pizza2, JSON.parse(new Cookies(req, res).get("order")), req, res);
+        console.log('------------insert Pizza1----------------');
+        new Cookies(req, res).set('order', JSON.stringify(UpdatedOrder), {
+            httpOnly: true,
+            secure: false      // for your dev environment => true for prod
+        });
+        return res.redirect('/api/pizza');
     }
 });
 

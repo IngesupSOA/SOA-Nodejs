@@ -48,7 +48,7 @@ var authenticate = function (req, res, next) {
         user.comparePassword(password, function (err, isMatch) {
             if (isMatch && !err) {
 
-                new Cookies(req, res).set('user', user._id, {
+                new Cookies(req, res).set('user', JSON.stringify(user), {
                     httpOnly: true,
                     secure: false      // for your dev environment => true for prod
                 });
@@ -73,6 +73,8 @@ module.exports = function () {
 
     router.route("/logout").get(function (req, res, next) {
         res.clearCookie('access_token');
+        res.clearCookie('user');
+        res.clearCookie('order');
         return res.redirect('/api/login/');
     });
     router.route("/login").get(function (req, res) {

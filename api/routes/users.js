@@ -18,12 +18,8 @@ router.get('/', function(req, res, next) {
 // TODO: Get current user
 router.get('/profile', function(req, res, next) {
     var cookieUser = new Cookies(req, res).get("user");
-    User.findOne({
-        _id: cookieUser
-    }, function (err, user) {
-        //console.log(user);
-         res.render('profile', { user : user });
-    });
+    res.render('profile', { user : JSON.parse(cookieUser) });
+
 
 });
 
