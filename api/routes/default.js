@@ -84,7 +84,7 @@ module.exports = function () {
 
 
     router.route("/verify").get(function (req, res, next) {
-        //router.use(utils.middleware());
+        router.use(utils.middleware());
         return res.status(200).json({working:true});
     });
 

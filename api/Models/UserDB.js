@@ -27,7 +27,7 @@ User.pre('save', function (next) {
     var user = this;
     var now = new Date();
 
-    //mis à jour élément de controle(Created_at, Updated_at)
+    //mis Ã  jour Ã©lÃ©ment de controle(Created_at, Updated_at)
     this.updated_at = now;
     if ( !this.created_at ) {
         this.created_at = now;

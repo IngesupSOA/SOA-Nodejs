@@ -27,7 +27,7 @@ module.exports.createToken = function (user, req, res, next) {
         sub: user._id,
         iss: 'http://localhost/api',
         //TODO Handle permissions to set them accordingly to the user trying to connect
-        scope: 'self api/users api/login api/verify'
+        scope: 'self api/users api/login api/verify api/logout'
     };
     var jwt = nJwt.create(claims, secretKey);
     jwt.setExpiration(new Date().getTime() + (60 * 60 * 1000)); // One hour from now
@@ -73,17 +73,17 @@ module.exports.fetch = function (req, res, next) {
 };
 
 module.exports.middleware = function () {
-console.log("In tokenHandler middleware");
+    console.log("In tokenHandler middleware");
     var func = function (req, res, next) {
 
         exports.verify(req, res, next, function (err, token) {
-console.log("hello");
+            console.log("hello");
             if (err) {
                 req.user = undefined;
                 console.log(err); // Token has expired, has been tampered with, etc
                 return next(new UnauthorizedAccessError("invalid_token", token));
             } else {
-                console.log('Token verified: OK'+token);
+                console.log('Token verified: OK' + token);
                 req.user = _.merge(req.user, token);
                 next();
             }
