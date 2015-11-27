@@ -2,6 +2,9 @@
  * Created by Antoine on 24/11/2015.
  */
 "use strict";
+
+var express = require('express');
+var router = express.Router();
 var mongoose = require('mongoose');
 var debug = require('debug')('app:routes:default' + process.pid),
     _ = require("lodash"),
@@ -54,7 +57,6 @@ var authenticate = function (req, res, next) {
             }
         });
     });
-
 
 };
 
