@@ -26,7 +26,9 @@ router.get('/orders', function(req, res, next) {
     Order.
     find().
     exec(function(err, orders){
-        res.render('back-orders',orders);
+        if(err) console.log(err);
+        console.log(JSON.parse(orders));
+        res.render('back-orders', { orders : JSON.parse(orders) });
     });
     //res.write('hello');
 });
