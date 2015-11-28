@@ -174,15 +174,24 @@ router.get('/addPizza', function(req, res, next) {
         price: 10,
         sizeType: "Normal",
         doughType: "Fine"
-    });
-
+    }).save(function(err,pizza){
+        if(err)
+            console.log(err.message+ " -- PAS OK !!");
+        else
+            console.log('Pizza insérée en base');
+    } );
     var pizza2 = new Pizza({
         name: "Pizza 2",
         description: "Desc Pizza 2",
         price: 12,
         sizeType: "Normal",
         doughType: "Fine"
-    });
+    }).save(function(err,pizza){
+        if(err)
+            console.log(err.message+ " -- PAS OK !!");
+        else
+            console.log('Pizza insérée en base');
+    } );
 
     if(cookieJson == undefined || cookieJson == null) {
         console.log('----------------createdOrder------------');
