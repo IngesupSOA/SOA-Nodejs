@@ -91,6 +91,12 @@
             <div class="ht-sidebar">
                 <aside class="ht-widget hw-posts-tab">
                     <div class="widget-content">
+                        <ul class="nav-tab" role="tablist">
+                            <li role="presentation" class="active"><a href="#hw-tab-popular" aria-controls="hw-tab-popular" role="tab" data-toggle="tab">Popular</a></li>
+                            <li role="presentation"><a href="/api/orders/paypal" role="tab" data-toggle="tab"> Pay ({{ orderCookies.pizzaList.length }}) </a></li>
+                            <li role="presentation"><a href="/api/orders/cleanOrder/{{orderCookies._id}}" role="tab" data-toggle="tab"> Clean </a></li>
+                        </ul>
+                        <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="hw-tab-popular">
                                 <article class="post">
@@ -107,18 +113,17 @@
                                                 Desc : {{orderPizza.description}} <br/>
                                                 sizeType : {{orderPizza.sizeType}} <br/>
                                                 doughType : {{orderPizza.doughType}} <br/>
+
                                             </div>
-                                            {% endfor %}
-                                            {% endif %}
                                         </div>
+                                        {% endfor %}
+                                        {% endif %}
                                 </article>
                             </div>
                         </div>
+                            <div role="tabpanel" class="tab-pane fade"></div>
+                            <div role="tabpanel" class="tab-pane fade"></div>
                     </div>
-                    {% if !orderCookies.length %}
-                    <a href="/api/orders/paypal">Commander</a>
-                        <a href="/api/orders/cleanOrder/{{orderCookies._id}}">Vider le panier</a>
-                    {% endif %}
                 </aside>
             </div>
 
