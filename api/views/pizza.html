@@ -105,7 +105,7 @@
                                             <h3> Commande </h3>
                                             {% if !orderCookies.length %}
                                                 <p>State : {{ orderCookies.state }}</p>
-                                                <p>User : {{ orderCookies.user }}</p>
+                                                <p>User : {{ user.username }}</p>
 
                                                 {% for orderPizza in orderCookies.pizzaList %}
                                                     <h4>{{orderPizza.name}} : <a href="/api/pizza/del/{{orderPizza._id}}">DeletePizza</a></h4>

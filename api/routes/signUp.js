@@ -1,11 +1,6 @@
-/**
- * Created by Ezehollar on 15/11/2015.
- */
 var express = require('express');
 var router = express.Router();
-//var string = require("string");
 var mongoose = require("mongoose");
-//var fs = require('fs');
 var User = mongoose.model("User");
 var Class = mongoose.model("Class");
 
@@ -40,7 +35,7 @@ router.post('/' , function(req, res)
                                 username: req.body.username,
                                 email: m_mail,
                                 password: req.body.pass,
-                                avatar: "none",
+                                avatar: "https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-simple-512.png",
                                 address: req.body.address,
                                 phoneNumber: req.body.phone,
                                 admin: false,
@@ -59,23 +54,23 @@ router.post('/' , function(req, res)
                     }
                     else {
                         registerErr = "L'utilisateur existe déjà";
-                        console.log("L'utilisateur existe déjà");
+                        console.log(registerErr);
                     }
                 });
             }
             else {
                 registerErr = "Votre addresse mail n'est pas une addresse Ynov.";
-                console.log("Votre addresse mail n'est pas une addresse Ynov.");
+                console.log(registerErr);
             }
         }else{
             registerErr = "Les deux mots de passe ne sont pas identiques";
-            console.log("Les deux mots de passe ne sont pas identiques");
+            console.log(registerErr);
         }
     }
     else
     {
         registerErr = "Les deux addresses mails ne sont pas identiques";
-        console.log("Les deux addresses mails ne sont pas identiques");
+        console.log(registerErr);
     }
     if(registerErr != null)
         res.render('login', {registerErr: registerErr});

@@ -30,10 +30,11 @@ router.get('/', function (req, res) {
                 console.log('ending http request');
                 var bodyParsed = JSON.parse(body);
                 var pizzas = bodyParsed.MenuPages[1].SubMenus;
+                var user = JSON.parse(new Cookies(req, res).get("user"));
                 if(orderCookie == undefined || orderCookie == null)
-                    res.render('pizza', {menus: pizzas, orderCookies: ""});
+                    res.render('pizza', {menus: pizzas, orderCookies: "", user: user});
                 else
-                    res.render('pizza', {menus: pizzas, orderCookies: JSON.parse(orderCookie)});
+                    res.render('pizza', {menus: pizzas, orderCookies: JSON.parse(orderCookie), user: user});
             });
         });
 
