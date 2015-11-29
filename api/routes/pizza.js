@@ -7,21 +7,13 @@ var Cookies = require("cookies");
 var UtilsOrder = require('../Utils/orderUtils');
 var utils = require("../Utils/utils.js");
 
-var OrderDB = require('../Models/OrderDB');
-var PizzaDB = require('../Models/PizzaDB');
-//var UserDB = require('../Models/UserDB');
-//var ClassDB = require('../Models/ClassDB');
 var Order = mongoose.model('Order');
 var Pizza = mongoose.model('Pizza');
 var User = mongoose.model('User');
 var Class = mongoose.model('Class');
 
-
-// http://pizza.dominos.fr/base/Store/GetStore/{ZIPCode}
-// http://pizza.dominos.fr/la-carte/nos-pizzas
-
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', function (req, res) {
     utils.middleware(false, req, res, function(){
         var orderCookie = new Cookies(req, res).get('order');
         var optionsget = {
@@ -54,7 +46,7 @@ router.get('/', function (req, res, next) {
 });
 
 
-router.get('/getAll', function(req, res, next) {
+router.get('/getAll', function(req, res) {
     Pizza.
         find().
         exec(function(err, orders){
@@ -62,7 +54,7 @@ router.get('/getAll', function(req, res, next) {
         });
 });
 
-router.get('/del/:value1', function(req, res, next) {
+router.get('/del/:value1', function(req, res) {
     utils.middleware(false, req, res, function() {
         var UpdateOrderToDelete = JSON.parse(new Cookies(req, res).get("order"));
 
@@ -70,18 +62,19 @@ router.get('/del/:value1', function(req, res, next) {
             res.redirect('/api/orders/cleanOrder/'+UpdateOrderToDelete._id);
         else
         {
+            // TODO: value1 seems to be unused, check var
             Pizza.findOne({_id: req.params.value1}, function (err, returnedPizza) {
                 if (err) console.log(err.message);
 
                 UpdateOrderToDelete = UtilsOrder.deletePizzaIntoOrder(returnedPizza, UpdateOrderToDelete, function (orderToUpdate) {
                     //console.log("Order to push into cookie:" + JSON.stringify(orderToUpdate._id));
-                    Pizza.remove({_id: returnedPizza._id}, function (err, count) {
+                    Pizza.remove({_id: returnedPizza._id}, function (err) {
                         if (err) console.log(err.message);
                         new Cookies(req, res).set('order', JSON.stringify(orderToUpdate), {
                             httpOnly: true,
                             secure: false      // for your dev environment => true for prod
                         });
-
+                        // TODO: Exception if not clean, must redirect
                         res.redirect('/api/pizza');
                     });
                 });
@@ -91,7 +84,7 @@ router.get('/del/:value1', function(req, res, next) {
 
 });
 
-router.get('/cleanPizzaAll', function(req, res, next) {
+router.get('/cleanPizzaAll', function(req, res) {
     utils.middleware(true, req, res, function() {
         Pizza.remove(function (err) {
             if (err) console.log(err.message);

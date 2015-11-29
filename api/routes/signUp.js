@@ -9,32 +9,24 @@ var mongoose = require("mongoose");
 var User = mongoose.model("User");
 var Class = mongoose.model("Class");
 
-router.get('/' , function(req , res , next) {
+router.get('/' , function(req, res) {
     res.redirect('/api/login');
 });
 
-router.post('/' , function(req , res , next)
+router.post('/' , function(req, res)
 {
     var registerErr = null;
     var m_mail = req.body.mail.toString();
 
-    if(req.body.checkmail == req.body.mail)
+    if(req.body.checkmail == m_mail)
     {
         if(req.body.checkpass == req.body.pass) {
             if (m_mail.indexOf("@ynov.com") > -1) {
-                var existMail = true;
                 User.find({
-                    email: req.body.mail,
+                    email: m_mail,
                     username: req.body.username
                 }).exec(function (err, result) {
                     if (result == "") {
-                        var firstname, lastname, username, address, phone, pass;
-                        firstname = req.body.firstname;
-                        lastname = req.body.lastname;
-                        username = req.body.username;
-                        address = req.body.address;
-                        phone = req.body.phone;
-                        pass = req.body.pass;
                         var class1 = new Class({
                             name: 'Bidon',
                             school: 'Bidon',
@@ -43,14 +35,14 @@ router.post('/' , function(req , res , next)
                         });
                         var user = new User(
                             {
-                                firstname: firstname,
-                                lastname: lastname,
-                                username: username,
+                                firstname: req.body.firstname,
+                                lastname: req.body.lastname,
+                                username: req.body.username,
                                 email: m_mail,
-                                password: pass,
+                                password: req.body.pass,
                                 avatar: "none",
-                                address: address,
-                                phoneNumber: phone,
+                                address: req.body.address,
+                                phoneNumber: req.body.phone,
                                 admin: false,
                                 class: class1,
                                 created_on: Date.now(),
