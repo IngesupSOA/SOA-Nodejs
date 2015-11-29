@@ -60,25 +60,29 @@ router.get('/paypal', function(req, res, next) {
     };
 
     var cookieOrder = new Cookies(req, res).get("order");
-    parseOrderPaypalJson(paymentDescription, cookieOrder);
 
-    paypal.payment.create(paymentDescription, configSandbox, function(error, payment){
-        if (error) {
-            console.log(error);
-        } else {
-            if(payment.payer.payment_method === 'paypal') {
-                //req.session.paymentId = payment.id;
-                var redirectUrl;
-                for(var i=0; i < payment.links.length; i++) {
-                    var link = payment.links[i];
-                    if (link.method === 'REDIRECT') {
-                        redirectUrl = link.href;
+    if(cookieOrder != undefined && cookieOrder != null && cookieOrder != "") {
+        parseOrderPaypalJson(paymentDescription, cookieOrder);
+        paypal.payment.create(paymentDescription, configSandbox, function (error, payment) {
+            if (error) {
+                console.log(error);
+            } else {
+                if (payment.payer.payment_method === 'paypal') {
+                    //req.session.paymentId = payment.id;
+                    var redirectUrl;
+                    for (var i = 0; i < payment.links.length; i++) {
+                        var link = payment.links[i];
+                        if (link.method === 'REDIRECT') {
+                            redirectUrl = link.href;
+                        }
                     }
+                    res.redirect(redirectUrl);
                 }
-                res.redirect(redirectUrl);
             }
-        }
-    });
+        });
+    }else{
+        res.redirect('/api/pizza/');
+    }
 });
 
 router.get('/success', function(req, res, next) {
@@ -93,12 +97,12 @@ router.get('/success', function(req, res, next) {
     exec(function(err, order){
 
         new Cookies(req, res).set("order", "", { httpOnly: true, secure: false });
-        res.redirect('/api/order/');
+        res.redirect('/api/pizza/');
     });
 });
 
 router.get('/fail', function(req, res, next) {
-    res.redirect('/api/orders/');
+    res.redirect('/api/pizza/');
 });
 
 router.get('/initOrder', function(req, res, next) {
