@@ -98,7 +98,10 @@ module.exports = function () {
         return res.render('index', {title: 'Accueil'});
     });
 
-
+    router.route("/").get(function (req, res, next) {
+        //router.use(utils.middleware());
+        return res.redirect('/api/index');
+    });
 
 
     router.unless = require("express-unless");

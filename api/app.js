@@ -62,6 +62,7 @@ app.use(function (req, res, next) {
 });
 
 //ROUTING
+app.get("/", function(req, res, next) {res.redirect('/api');});
 app.use("/api", require(path.join(__dirname, "routes", "default.js"))());
 app.use("/api/users", users);
 app.use("/api/signUp", signUp);
