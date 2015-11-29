@@ -26,7 +26,7 @@ module.exports.addPizzaIntoOrder = function (pizza, orderToUpdate) {
     return orderToUpdate;
 };
 
-module.exports.deletePizzaIntoOrder = function (pizza, orderToUpdate) {
+module.exports.deletePizzaIntoOrder = function (pizza, orderToUpdate,next) {
 
     var PizzaListTemp = orderToUpdate.pizzaList;
     var index = PizzaListTemp.indexOf(pizza);
@@ -41,6 +41,6 @@ module.exports.deletePizzaIntoOrder = function (pizza, orderToUpdate) {
             if (err) throw err;
         });
 
-    return orderToUpdate;
+    return next(orderToUpdate);
 };
 
