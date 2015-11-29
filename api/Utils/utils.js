@@ -33,22 +33,17 @@ module.exports.createToken = function (user, req, res, next) {
     jwt.setExpiration(new Date().getTime() + (60 * 60 * 1000)); // One hour from now
     var token = jwt.compact();
 
-
     new Cookies(req, res).set('access_token', token, {
         httpOnly: true,
-        secure: false      // for your dev environment => true for prod
+        secure: false
     });
-
 
     return next();
 };
 
 module.exports.verify = function (req, res, next) {
-
     console.log("Verifying token");
-
     var token = exports.fetch(req, res);
-
     nJwt.verify(token, secretKey, function (err, token) {
         if (err) {
             req.user = undefined;
@@ -79,7 +74,6 @@ module.exports.middleware = function (admin, req, res, next) {
 
     /*
     var func = function (req, res, next) {
-
         exports.verify(req, res, next, function (err, token) {
             console.log("hello");
             if (err) {
@@ -91,7 +85,6 @@ module.exports.middleware = function (admin, req, res, next) {
                 req.user = _.merge(req.user, token);
                 next();
             }
-
         });
     };
 

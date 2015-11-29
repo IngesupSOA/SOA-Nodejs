@@ -4786,12 +4786,14 @@ dd {
 ---------------------------------------*/
 .ht-sidebar {
   position: fixed;
-  width: 200px;
+  width: 250px;
   float: right;
   margin-right: 0px;
   right: 10px;
   z-index: 999;
   background-color: rgb(163, 169, 166);
+  max-height: 350px;
+  overflow-y: scroll;
 }
 .ht-widget {
   margin-bottom: 30px;
