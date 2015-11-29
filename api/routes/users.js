@@ -15,12 +15,11 @@ router.get('/', function(req, res, next) {
       });
 });
 
-// TODO: Get current user
+// TODO: Check why it throw an error (500)
 router.get('/profile', function(req, res, next) {
-    var cookieUser = new Cookies(req, res).get("user");
-    res.render('profile', { user : JSON.parse(cookieUser) });
-
-
+    var cookieUser = (new Cookies(req, res).get("user")) ? JSON.parse(new Cookies(req, res).get("user")) : null ;
+    console.log(cookieUser);
+    res.render('profile', { user : cookieUser });
 });
 
 
@@ -48,7 +47,7 @@ router.get('/setup', function(req, res, next) {
         school: 'Ingesup Lyon',
         created_on: Date.now(),
         updated_at: Date.now()
-    })
+    });
     var nick = new User({
         firstname: 'Nick',
         lastname: 'Cerminara',
