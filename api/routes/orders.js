@@ -95,7 +95,7 @@ router.get('/success', function(req, res, next) {
         {multi:true}).
     exec(function(err, order){
 
-        new Cookies(req, res).set("order", "", { httpOnly: true, secure: false });
+            res.clearCookie('order');
         res.redirect('/api/pizza/');
     });
 });
