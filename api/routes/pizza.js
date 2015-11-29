@@ -65,30 +65,30 @@ router.get('/getAll', function(req, res, next) {
 router.get('/del/:value1', function(req, res, next) {
     utils.middleware(false, req, res, function() {
         var UpdateOrderToDelete = JSON.parse(new Cookies(req, res).get("order"));
-        //console.log("Order to update:"+JSON.stringify(UpdateOrderToDelete._id));
-        //console.log("Pizzas before:"+JSON.stringify(UpdateOrderToDelete.pizzaList));
-        Pizza.findOne({_id: req.params.value1}, function(err,returnedPizza) {
-            if (err) console.log(err.message);
 
-            UpdateOrderToDelete = UtilsOrder.deletePizzaIntoOrder(returnedPizza, UpdateOrderToDelete, function (orderToUpdate) {
-                //console.log("Order to push into cookie:" + JSON.stringify(orderToUpdate._id));
-                Pizza.remove({_id: returnedPizza._id}, function (err, count) {
-                    if (err) console.log(err.message);
-                    //console.log('Pizza removed from order. count removed:' + count);
+        if(UpdateOrderToDelete.pizzaList.length == 1)
+            res.redirect('/api/orders/cleanOrder/'+UpdateOrderToDelete._id);
+        else
+        {
+            Pizza.findOne({_id: req.params.value1}, function (err, returnedPizza) {
+                if (err) console.log(err.message);
 
+                UpdateOrderToDelete = UtilsOrder.deletePizzaIntoOrder(returnedPizza, UpdateOrderToDelete, function (orderToUpdate) {
+                    //console.log("Order to push into cookie:" + JSON.stringify(orderToUpdate._id));
+                    Pizza.remove({_id: returnedPizza._id}, function (err, count) {
+                        if (err) console.log(err.message);
+                        new Cookies(req, res).set('order', JSON.stringify(orderToUpdate), {
+                            httpOnly: true,
+                            secure: false      // for your dev environment => true for prod
+                        });
 
-                    //console.log('Setting updatedOrder with new pizzaList into cookie');
-                    //console.log("Pizzas after:" + JSON.stringify(orderToUpdate.pizzaList));
-                    new Cookies(req, res).set('order', JSON.stringify(orderToUpdate), {
-                        httpOnly: true,
-                        secure: false      // for your dev environment => true for prod
+                        res.redirect('/api/pizza');
                     });
-
-                    res.redirect('/api/pizza');
                 });
             });
-        });
+        }
     });
+
 });
 
 router.get('/cleanPizzaAll', function(req, res, next) {
