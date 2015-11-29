@@ -26,10 +26,10 @@ router.get('/profile', function(req, res, next) {
 
 
 /* DELETE user */
-router.get('/del/:value', function(req, res, next){
+router.get('/delete/:value', function(req, res, next){
   console.log(req.params.value);
   User.
-      remove({lastname: req.params.value}).
+      remove({_id: req.params.value}).
       exec(function(err, user){
         res.json(user);
       });

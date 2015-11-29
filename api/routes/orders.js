@@ -165,53 +165,44 @@ function parseOrderPaypalJson(paymentDescription, order){
     }
 }
 
-router.get('/addPizza', function(req, res, next) {
+router.get('/cleanOrder', function(req, res, next) {
+    res.clearCookie('order');
+    return res.redirect('/api/pizza');
+});
+
+router.get('/addPizza/name/:value1/price/:value2', function(req, res, next) {
     var cookieJson = new Cookies(req, res).get("order");
 
-    var pizza1 = new Pizza({
-        name: "Pizza 1",
-        description: "Desc Pizza 1",
-        price: 10,
-        sizeType: "Normal",
-        doughType: "Fine"
-    }).save(function(err,pizza){
-        if(err)
-            console.log(err.message+ " -- PAS OK !!");
-        else
-            console.log('Pizza insérée en base');
-    } );
-    var pizza2 = new Pizza({
-        name: "Pizza 2",
-        description: "Desc Pizza 2",
-        price: 12,
-        sizeType: "Normal",
-        doughType: "Fine"
-    }).save(function(err,pizza){
-        if(err)
-            console.log(err.message+ " -- PAS OK !!");
-        else
-            console.log('Pizza insérée en base');
-    } );
+    var firstPizza = new Pizza({
+        name: req.params.value1,
+        description: "Description Pizza",
+        price: req.params.value2.substr(0,2),
+        sizeType: "Large",
+        doughType: "Classic"
+    });
 
+    var pizzaToAdd = new Pizza({
+        name: req.params.value1,
+        description: "Description Pizza",
+        price: req.params.value2.substr(0,2),
+        sizeType: "Large",
+        doughType: "Classic"
+    });
+    
     if(cookieJson == undefined || cookieJson == null) {
-        console.log('----------------createdOrder------------');
+        //console.log('----------------createdOrder------------');
         var userJson = JSON.parse(new Cookies(req, res).get("user"));
-
+        firstPizza.save();
         //IF order is not create, create a new order
         var orderToInsert = new Order({
-            "pizzaList": [pizza1],
+            "pizzaList": [firstPizza],
             "user": userJson,
-            "state": "XXXXXXXX",
-            "paymentType": "XXXXXXXXX"
+            "state": "ToBePaid",
+            "paymentType": "PayPal"
         });
 
-        orderToInsert.save( function(err, order) {
-                if(err)
-                    console.log(err.message+ " -- PAS OK !!");
-                else
-                    console.log('ok');
-            } );
-        console.log('----------------createdOrder1------------');
+        orderToInsert.save();
+        //console.log('----------------createdOrder1------------');
 
         new Cookies(req, res).set('order', JSON.stringify(orderToInsert), {
             httpOnly: true,
@@ -220,11 +211,13 @@ router.get('/addPizza', function(req, res, next) {
 
         return res.redirect('/api/pizza');
     }
-    else {
-        console.log('------------insert Pizza----------------');
+    else
+    {
+        //console.log('------------insert Pizza----------------');
         //Ajout de la pizza
-        var UpdatedOrder = UtilsOrder.addPizzaIntoOrder(pizza2, JSON.parse(new Cookies(req, res).get("order")), req, res);
-        console.log('------------insert Pizza1----------------');
+        pizzaToAdd.save();
+        var UpdatedOrder = UtilsOrder.addPizzaIntoOrder(pizzaToAdd, JSON.parse(new Cookies(req, res).get("order")), req, res);
+        //console.log('------------insert Pizza1----------------');
         new Cookies(req, res).set('order', JSON.stringify(UpdatedOrder), {
             httpOnly: true,
             secure: false      // for your dev environment => true for prod

@@ -94,18 +94,27 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="hw-tab-popular">
                                 <article class="post">
-                                    <a href="#">
-                                        <div class="content">
-                                            <h4>Pizza name</h4>
+                                        <div class="content orderContent">
+                                            <h3> Commande </h3>
+                                            {% if !orderCookies.length %}
+                                            <p>Etat : {{ orderCookies.state }}</p>
+                                            <p>User : {{ orderCookies.user }}</p>
+                                            {% for orderPizza in orderCookies.pizzaList %}
+
+                                            <h4>{{orderPizza.name}} : {{orderPizza.price}} euros</h4>
                                             <div class="meta-rate" title="user order">
-                                                User X - Quantity
+                                                {{orderPizza.description}}
                                             </div>
+                                            {% endfor %}
+                                            {% endif %}
                                         </div>
-                                    </a>
                                 </article>
                             </div>
                         </div>
                     </div>
+                    <a href="/api/orders/paypal">Commander</a>
+                        <a href="/api/orders/cleanOrder">Vider le panier</a>
+
                 </aside>
             </div>
 
@@ -127,7 +136,7 @@
                                     <p class="entry-position">{{ pizza.Price.Delivered }}</p>
                                     <div class="entry-social">
                                         <div class="entry-social-inner">
-                                            <a href="/api/order/addPizza" class="fa fa-shopping-basket">Add to basket</a>
+                                            <a href="/api/orders/addPizza/name/{{pizza.Name}}/price/{{pizza.Price.Delivered}}" class="test" class="fa fa-shopping-basket">Add to basket</a>
                                         </div>
                                     </div>
                                 </div>
