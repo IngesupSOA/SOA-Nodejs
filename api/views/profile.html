@@ -102,8 +102,9 @@
                                 <h3 class="heading">User settings</h3>
                                 <p>Hey {{ user.lastname }}, wassup ?</p>
                             </div>
-                            <form action="#">
+                            <form action="/api/users/updUser" method="post">
                                 <div class="row">
+                                    <input id="userId" name="userId" type="hidden" value="{{ user._id}}">
                                     <div class="form-group col-xs-12 col-sm-4">
                                         <label for="firstname">First name</label>
                                         <input id="firstname" name="firstname" type="text" value="{{ user.firstname }}">
@@ -124,7 +125,17 @@
                                     </div>
                                     <div class="form-group col-xs-12 col-sm-6">
                                         <label for="password">Password</label>
-                                        <input id="password" name="password" type="password" value="*******">
+                                        <input id="password" name="password" type="password" value="">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label for="address">address</label>
+                                        <input id="address" name="address" type="text" value="{{ user.address }}">
+                                    </div>
+                                    <div class="form-group col-xs-12 col-sm-6">
+                                        <label for="phoneNumber">Phonne Number</label>
+                                        <input id="phoneNumber" name="phoneNumber" type="text" value="{{ user.phoneNumber }}">
                                     </div>
                                 </div>
                                 <div class="form-group submit-group">
@@ -135,7 +146,7 @@
                             </form>
                         </div>
                     </div>
-                    {% else if %}
+                    {% else %}
                     <div class="hs-content col-xs-12 col-sm-8 col-sm-offset-2">
                         <div class="ht-form-block">
                             <div class="text-center">

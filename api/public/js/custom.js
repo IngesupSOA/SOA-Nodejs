@@ -16,17 +16,6 @@
 	//===== Header area
 	//
 	HAINTHEME.navbar = function() {
-		//** Sticky nav
-		//
-		var stickyNav = function() {
-			$('.sticky-nav').sticky();
-			$('.sticky-nav').on({
-				'sticky-start' : function() {
-				},
-				'sticky-end' : function() {
-				}
-			});
-		}
 		//** Mega menu
 		//
 		var megaMenuEffect = function() {
@@ -135,53 +124,6 @@
 				})
 			});
 		};
-        //** Search form
-		//
-        var searchFormExpand = function() {
-			$('.ct-search').find('button').each(function(){
-				var inputText = $(this).parent().find('input');
-				$(this).on('click', function(e){
-					if (!inputText.hasClass('is-visible')) {
-						inputText.addClass('is-visible').focus();
-						inputText.animate(
-							{
-								width: 180,
-								opacity: 1
-							},
-							{
-								duration: 300
-							}
-						);
-						$(this).addClass('is-active');
-					} else {
-						inputText.removeClass('is-visible');
-						inputText.animate(
-							{
-								width: 0,
-								opacity: 0
-							},
-							{
-								duration: 300
-							}
-						);
-						$(this).removeClass('is-active');
-					}
-					e.preventDefault();
-					e.stopPropagation();
-				});
-			});
-			$('#ht-search-form')
-				.on('show.bs.modal', function(event) {
-					$('.search-toggle').addClass('active');
-				})
-				.on('shown.bs.modal', function(event) {
-					$(this).find('input').focus();
-				})
-				.on('hidden.bs.modal', function(event) {
-					$('.search-toggle').removeClass('active');
-				})
-			;
-		};
 		//** Mobile nav
 		//
 		var mobileNav = function() {
@@ -253,273 +195,12 @@
 		};
 		//** Invoking
 		//
-		stickyNav();
 		megaMenuEffect();
 		dropdownMenuEffect();
-		searchFormExpand();
 		mobileNav();
 		mobileSubNav();
 		anywhereClose();
 		clearPropagation();
-	};
-
-	//===== Slider
-	//
-	HAINTHEME.slider = function() {
-		$('.flexslider.basic').each(function(){
-			$(this).flexslider({
-				namespace		: 	"flex-",
-				selector		: 	".slides > li",
-				animation		:	$(this).data('effect'), //"fade" or "slide"
-				slideshow		:	$(this).data('auto'), // Boolean: Animate slider automatically
-				easing			:  	"easeInOutExpo", // Easing
-				useCSS			:  	true, // Use css animation
-				direction		:	$(this).data('direction'), // horizontal, vertical
-				controlNav		:	$(this).data('pager'), // Pagination
-				directionNav	:	$(this).data('navi'), // Next, prev
-				animationSpeed	:	$(this).data('animation-speed'),
-				slideshowSpeed	:	$(this).data('slide-speed'),
-				smoothHeight	:	true,
-				prevText		:	'<i class ="fa fa-chevron-left"></i>',
-				nextText		:	'<i class ="fa fa-chevron-right"></i>'
-			});
-		});
-		$('.flexslider.sync').each(function(){
-			$($(this).data('sync')).flexslider({
-				asNavFor		:  	$('#'+$(this).attr('id')),
-				animation		:	"slide",
-				itemWidth		:  	60,
-				directionNav	: 	false,
-				controlNav		:	false,
-				animationLoop	:  	false,
-				itemMargin		:  	0
-			});
-			$(this).flexslider({
-				sync			: 	$(this).data('sync'),
-				namespace		: 	"flex-",
-				selector		: 	".slides > li",
-				animation		:	$(this).data('effect'), //"fade" or "slide"
-				slideshow		:	$(this).data('auto'), // Boolean: Animate slider automatically
-				//easing			:  	"easeInOutExpo", // Easing
-				useCSS			:  	true, // Use css animation
-				direction		:	$(this).data('direction'), // horizontal, vertical
-				controlNav		:	$(this).data('pager'), // Pagination
-				directionNav	:	$(this).data('navi'), // Next, prev
-				animationSpeed	:	$(this).data('animation-speed'),
-				slideshowSpeed	:	$(this).data('slide-speed'),
-				smoothHeight	:	false,
-				prevText		:	'<i class ="fa fa-chevron-left"></i>',
-				nextText		:	'<i class ="fa fa-chevron-right"></i>'
-			});
-		});
-		$('.ht-carousel').each(function(){
-			$(this).find('.slides').owlCarousel({
-				responsive : {
-					0: {
-						items: $(this).data('items')[0]
-					},
-					481: {
-						items: $(this).data('items')[1]
-					},
-					769: {
-						items: $(this).data('items')[2]
-					},
-					993: {
-						items: $(this).data('items')[3]
-					},
-					1201: {
-						items: $(this).data('items')[4]
-					}
-				},
-				loop: $(this).data('loop'),
-
-				autoplay: $(this).data('auto'),
-				autoplayTimeout: $(this).data('slide-speed'),
-				autoplayHoverPause: true,
-
-				smartSpeed: $(this).data('animation-speed'),
-
-				fallbackEasing: 'swing',
-
-				nestedItemSelector: false,
-				itemElement: 'div',
-				stageElement: 'div',
-
-				// Classes and Names
-				themeClass: '',
-				baseClass: 'owl-carousel',
-				itemClass: 'owl-item',
-				centerClass: 'center',
-				activeClass: 'active',
-
-				dots: $(this).data('pager'),
-				nav: $(this).data('navi'),
-				navText: ['<i class ="fa fa-chevron-left"></i>', '<i class ="fa fa-chevron-right"></i>']
-			});
-		});
-	};
-
-	//===== Isotope
-	//
-	HAINTHEME.isotope = function() {
-		$('.isotope-filter').each(function(){
-			var targetGrid = $(this).data('target');
-			$(targetGrid).isotope({
-				itemSelector: '.entry',
-				layoutMode: 'masonry',
-				transitionDuration: '1s'
-			});
-			$(this).find('a').on( 'click', function(e) {
-				$(this).parent().parent().find('li').removeClass('is-filtered');
-				$(this).parent().addClass('is-filtered');
-				var filterValue = $(this).data('filter');
-				$(targetGrid).isotope({
-					filter: filterValue,
-					transitionDuration: '1s'
-				});
-				e.preventDefault();
-			});
-		});
-	};
-
-	//===== Masonry
-	//
-	HAINTHEME.masonry = function() {
-		$('.ht-masonry-layout').each(function(){
-			var gridSizer = $(this).data('grid-size');
-			$(this).isotope({
-				layoutMode: 'masonry',
-				columnWidth: gridSizer,
-				isFitWidth: true,
-				gutter: '1'
-			});
-		});
-	};
-
-	//===== Comment Reply
-	//
-	HAINTHEME.commentReply = function() {
-		var html = 
-		'<div class="comment-reply">'+
-			'<button class="close">&times;</button>'+
-			'<div class="">'+
-				'<h3 class="heading">REPLY TO THIS COMMENT</h3>'+
-			'</div>'+
-			'<form action="">'+
-				'<div class="form-group half">'+
-					'<label for="">Name <span class="label-description">(ex: William) <sup>*</sup></span></label>'+
-					'<input type="text">'+
-				'</div>'+
-				'<div class="form-group half">'+
-					'<label for="">Email <span class="label-description">(Not Published)</span> <sup>*</sup></label>'+
-					'<input type="text">'+
-				'</div>'+
-				'<div class="form-group half">'+
-					'<label for="">Website <span class="label-description">(Optional)</span></label>'+
-					'<input type="text">'+
-				'</div>'+
-				'<div class="form-group">'+
-					'<label for="">Comment <sup>*</sup></label>'+
-					'<textarea name="" id="" cols="30" rows="5"></textarea>'+
-				'</div>'+
-				'<div class="form-group submit-group">'+
-					'<div><input type="checkbox"> Notify me of followup comments in this post via email</div>'+
-					'<button type="submit" class="ht-button view-more-button">'+
-						'<i class="fa fa-arrow-left"></i> SUBMIT <i class="fa fa-arrow-right"></i>'+
-					'</button>'+
-				'</div>'+
-			'</form>'+
-		'</div>'
-
-		$('.comment-reply-link').on('click', function() {
-			var target = $(this).attr('href');
-			if ($(target).find('.comment-reply').length == 0) {
-				$(target).find('.comment-content').append(html);
-			}
-		});
-
-		$(document).on('click', '.comment-reply .close', function(){
-			$(this).parent().remove();
-		});
-	};
-
-	HAINTHEME.googleMapAPI = function() {
-		var mapCounter = 1;
-		$('.ht-map').each(function(){
-			$(this).attr('id','ht-map-'+ mapCounter);
-			mapCounter++;
-			var coor = $(this).data('coor');
-			var id = $(this).attr('id');
-			var zooming = $(this).data('zoom');
-			var mapType = $(this).data('map-type');
-			var controlUI = $(this).data('control-ui') ? false : true;
-			var scrollWheel = $(this).data('scroll-wheel');
-			var marker = $(this).data('marker');
-			var style = $(this).data('style');
-
-			$(this).css('height',$(this).data('height'));
-
-			function initialize() {
-				var map_canvas = document.getElementById(id);
-				var myLatlng = new google.maps.LatLng(coor[0],coor[1]);
-				var map_options = {
-					center: myLatlng,
-					zoom: zooming,
-					mapTypeId: mapType,
-					disableDefaultUI: controlUI,
-					scrollwheel: scrollWheel,
-					styles: style
-				}
-				var map = new google.maps.Map(map_canvas, map_options);
-				if (marker != "") {
-					var mapMarker = new google.maps.Marker({
-						position: myLatlng,
-						map: map,
-						title: marker
-					});
-				}
-			}
-			google.maps.event.addDomListener(window, 'load', initialize);
-		});
-	};
-
-	HAINTHEME.recipeSubmit = function() {
-		var minutesConverter = function(minute) {
-			var hou = Math.floor(minute / 60);
-			var min = minute % 60;
-
-			hou = hou > 9 ? hou : '0' + hou;
-			min = min > 9 ? min : '0' + min;
-
-			return hou + ':' + min;
-		}
-		$('.upload').each(function() {
-			var $target = $($(this).data('target'));
-			var $button = $(this).find('a.upload-trigger');
-			var $visibleInput = $(this).find('.upload-visible');
-
-			$button.on('click', function(e) {
-				$target.trigger('click');
-				e.preventDefault();
-			})
-			$target.on('change', function() {
-				$visibleInput.val($(this).val());
-			})
-		});
-		$( ".slider-range" ).each(function() {
-			var $this = $(this);
-			var $targetInput = $($(this).data('target'));
-			$this.slider({
-				// range: true,
-				min: 0,
-				max: $(this).data('max') * 60,
-				step: 1,
-				values: [ 0 ],
-				slide: function( event, ui ) {
-					$targetInput.val( minutesConverter(ui.values[ 0 ]) );
-				}
-			});
-		})
 	};
 
 	HAINTHEME.lightbox = function() {
@@ -537,20 +218,6 @@
 					;
 				})
 			});
-		});
-		$('a.ht-lightbox').nivoLightbox({
-			effect: 'fadeScale',
-			theme: 'default',
-			keyboardNav: true,
-			clickOverlayToClose: true,
-			onInit: function(){},
-			beforeShowLightbox: function(){},
-			afterShowLightbox: function(lightbox){},
-			beforeHideLightbox: function(){},
-			afterHideLightbox: function(){},
-			onPrev: function(element){},
-			onNext: function(element){},
-			errorMessage: 'The requested content cannot be loaded. Please try again later.'
 		});
 	};
 
@@ -577,26 +244,8 @@
 			$(this).attr(dataAttrFrom,dataFrom).attr(dataAttrTo,dataTo);
 		});
 	};
-	HAINTHEME.parallaxInit = function() {
-		var vW = $(window).width();
-		if( vW >= 768) {
-			var s = skrollr.init({
-				forceHeight: false,
-				smoothScrolling: true
-			});
-		} else {
-			var s = skrollr.init();
-			s.destroy();
-		}
-		if(Modernizr.touch) {
-			var s = skrollr.init();
-			s.destroy();
-		}
-	};
 	
 	HAINTHEME.others = function() {
-		$("#dp-hook").DateTimePicker();
-
 		$('.ht-accordion').each(function() {
 			var $this = $(this);
 			$(this).find('.panel-heading').on('click', function() {
@@ -607,10 +256,6 @@
 
 		$('.entry-ingredient').find('tr').on('click', function() {
 			$(this).toggleClass('is-done');
-		});
-
-		$(".action-print").printPage({
-			message: 'Loading print ...'
 		});
 
 		$('.action-share').each(function() {
@@ -657,27 +302,13 @@
 		$('html').removeClass('no-js');
 		
 		HAINTHEME.navbar();
-		HAINTHEME.slider();
-		HAINTHEME.isotope();
-		HAINTHEME.masonry();
 		HAINTHEME.lightbox();
-		HAINTHEME.commentReply();
-		HAINTHEME.googleMapAPI();
-		HAINTHEME.recipeSubmit();
 		HAINTHEME.parallaxGen();
-		HAINTHEME.parallaxInit();
 		HAINTHEME.others();
 
 	});
 
 	$(window)
-		.on( 'load', function() {
-			HAINTHEME.isotope();
-			HAINTHEME.masonry();
-		})
-		.on( 'resize', function() {
-			HAINTHEME.parallaxInit();
-		})
 		.on( 'scroll', function() {
 			if ($('.ht-main-navbar').hasClass('scroll-up-nav')) {
 				var currentScroll = $(this).scrollTop();

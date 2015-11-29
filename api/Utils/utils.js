@@ -74,12 +74,14 @@ module.exports.fetch = function (req, res, next) {
         return token;
 };
 
-module.exports.middleware = function () {
-console.log("In tokenHandler middleware");
+module.exports.middleware = function (admin, req, res, next) {
+    console.log("In tokenHandler middleware");
+
+    /*
     var func = function (req, res, next) {
 
         exports.verify(req, res, next, function (err, token) {
-console.log("hello");
+            console.log("hello");
             if (err) {
                 req.user = undefined;
                 console.log(err); // Token has expired, has been tampered with, etc
@@ -96,7 +98,18 @@ console.log("hello");
     func.unless = require("express-unless");
     console.log("hello2");
     return func;
+    */
+    var access_token = new Cookies(req, res).get("access_token");
+    var user = new Cookies(req, res).get("user");
+    var userJson;
+    if(user != undefined && user != null && user != "")
+        userJson = JSON.parse(user);
 
+    if (access_token == undefined || access_token == null || access_token == "" || (admin && !userJson.admin)) {
+        return res.redirect('/api/login');
+    }else{
+        return next(req, res, next);
+    }
 };
 
 module.exports.TOKEN_EXPIRATION = TOKEN_EXPIRATION;

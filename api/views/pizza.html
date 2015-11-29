@@ -50,7 +50,8 @@
                 </ul>
             </div>
 
-            <div id="undefined-sticky-wrapper" class="sticky-wrapper" style="height: 100px;"><div class="ht-main-navbar logo-center sticky-nav scroll-up-nav">
+            <div id="undefined-sticky-wrapper" class="sticky-wrapper" style="height: 100px;">
+                <div class="ht-main-navbar logo-center scroll-up-nav">
                 <div class="container">
                     <div class="inner">
                         <h1 id="ht-logo">
@@ -99,26 +100,25 @@
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="hw-tab-popular">
-                                <article class="post">
+                                    <article class="post">
                                         <div class="content orderContent">
                                             <h3> Commande </h3>
                                             {% if !orderCookies.length %}
-                                            <p>State : {{ orderCookies.state }}</p>
-                                            <p>User : {{ orderCookies.user }}</p>
-                                            {% for orderPizza in orderCookies.pizzaList %}
+                                                <p>State : {{ orderCookies.state }}</p>
+                                                <p>User : {{ orderCookies.user }}</p>
 
-                                            <h4>{{orderPizza.name}} : <a href="/api/pizza/del/{{orderPizza._id}}">DeletePizza</a></h4>
-                                            <div class="meta-rate" title="user order">
-                                                Price : {{orderPizza.price}} euros <br/>
-                                                Desc : {{orderPizza.description}} <br/>
-                                                sizeType : {{orderPizza.sizeType}} <br/>
-                                                doughType : {{orderPizza.doughType}} <br/>
-
-                                            </div>
+                                                {% for orderPizza in orderCookies.pizzaList %}
+                                                    <h4>{{orderPizza.name}} : <a href="/api/pizza/del/{{orderPizza._id}}">DeletePizza</a></h4>
+                                                    <div class="meta-rate" title="user order">
+                                                        Price : {{orderPizza.price}} euros <br/>
+                                                        Desc : {{orderPizza.description}} <br/>
+                                                        sizeType : {{orderPizza.sizeType}} <br/>
+                                                        doughType : {{orderPizza.doughType}} <br/>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
-                                        {% endfor %}
-                                        {% endif %}
-                                </article>
+                                    </article>
                             </div>
                         </div>
                             <div role="tabpanel" class="tab-pane fade"></div>

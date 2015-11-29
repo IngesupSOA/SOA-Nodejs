@@ -95,59 +95,13 @@ router.get('/success', function(req, res, next) {
         {multi:true}).
     exec(function(err, order){
 
-        new Cookies(req, res).set("order", "", { httpOnly: true, secure: false });
+            res.clearCookie('order');
         res.redirect('/api/pizza/');
     });
 });
 
 router.get('/fail', function(req, res, next) {
     res.redirect('/api/pizza/');
-});
-
-router.get('/initOrder', function(req, res, next) {
-    var class1 = new Class({
-        name: 'Expert 1',
-        school: 'Ingésup Lyon',
-        created_on: Date.now(),
-        updated_at: Date.now()
-    });
-    var nick = new User({
-        firstname: 'Nick',
-        lastname: 'Cerminara',
-        username: 'nick',
-        email: 'nick.cerminara@gmail.com',
-        password: 'password',
-        avatar: 'yoloAvatar',
-        address: '5th Main Street Avenue, 35697 NYC, USA',
-        phoneNumber: '+45 005 458 223',
-        admin: true,
-        class: class1,
-        created_on: Date.now(),
-        updated_at: Date.now()
-    });
-    var pizza1 = new Pizza({
-        name: "Pizza 1",
-        description: "Desc Pizza 1",
-        price: 10,
-        sizeType: "Normal",
-        doughType: "Fine"
-    });
-    var pizza2 = new Pizza({
-        name: "Pizza 2",
-        description: "Desc Pizza 2",
-        price: 12,
-        sizeType: "Normal",
-        doughType: "Fine"
-    });
-    var order = new Order({
-        "pizzaList": [pizza1, pizza2],
-        "user": nick,
-        "state": "notPayed",
-        "paymentType": "Paypal"
-    });
-    order.save();
-    new Cookies(req, res).set("order", JSON.stringify(order), { httpOnly: true, secure: false });
-    res.render('index');
 });
 
 function parseOrderPaypalJson(paymentDescription, order){

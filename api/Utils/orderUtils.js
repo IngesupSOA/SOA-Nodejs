@@ -29,8 +29,13 @@ module.exports.addPizzaIntoOrder = function (pizza, orderToUpdate) {
 module.exports.deletePizzaIntoOrder = function (pizza, orderToUpdate,next) {
 
     var PizzaListTemp = orderToUpdate.pizzaList;
-    var index = PizzaListTemp.indexOf(pizza);
-    PizzaListTemp.splice(index,1);
+    PizzaListTemp.forEach(function (item) {
+        if(pizza._id == item._id)
+        {
+            PizzaListTemp.splice(PizzaListTemp.indexOf(item),1);
+            //console.log(PizzaListTemp.indexOf(item));
+        }
+    });
 
     Order.findOneAndUpdate(
         {_id: orderToUpdate._id}
@@ -43,4 +48,3 @@ module.exports.deletePizzaIntoOrder = function (pizza, orderToUpdate,next) {
 
     return next(orderToUpdate);
 };
-

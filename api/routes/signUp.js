@@ -62,7 +62,6 @@ router.post('/' , function(req , res , next)
                                 console.log(err);
                             else {
                                 console.log('User saved successfully');
-                                res.json({success: true});
                             }
                         });
                     }
