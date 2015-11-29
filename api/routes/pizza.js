@@ -65,25 +65,29 @@ router.get('/getAll', function(req, res, next) {
 router.get('/del/:value1', function(req, res, next) {
     utils.middleware(false, req, res, function() {
         var UpdateOrderToDelete = JSON.parse(new Cookies(req, res).get("order"));
-
-        Pizza.findOne({_id: req.params.value1}, function (err, pizza) {
+        console.log("Order to update:"+JSON.stringify(UpdateOrderToDelete._id));
+        console.log("Pizzas before:"+JSON.stringify(UpdateOrderToDelete.pizzaList));
+        Pizza.findOne({_id: req.params.value1}, function(err,returnedPizza) {
             if (err) console.log(err.message);
 
-            UpdateOrderToDelete = UtilsOrder.deletePizzaIntoOrder(pizza, UpdateOrderToDelete);
-            return UpdateOrderToDelete;
-        });
+            UpdateOrderToDelete = UtilsOrder.deletePizzaIntoOrder(returnedPizza, UpdateOrderToDelete, function (orderToUpdate) {
+                console.log("Order to push into cookie:" + JSON.stringify(orderToUpdate._id));
+                Pizza.remove({_id: returnedPizza._id}, function (err, count) {
+                    if (err) console.log(err.message);
+                    console.log('Pizza removed from order. count removed:' + count);
 
-        console.log(UpdateOrderToDelete);
 
-        Pizza.remove({_id: req.params.value1}, function (err) {
-            if (err) console.log(err.message);
-        });
+                    console.log('Setting updatedOrder with new pizzaList into cookie');
+                    console.log("Pizzas after:" + JSON.stringify(orderToUpdate.pizzaList));
+                    new Cookie(req, res).set('order', JSON.stringify(orderToUpdate), {
+                        httpOnly: true,
+                        secure: false      // for your dev environment => true for prod
+                    });
 
-        new Cookies(req, res).set('order', JSON.stringify(UpdateOrderToDelete), {
-            httpOnly: true,
-            secure: false      // for your dev environment => true for prod
+                    res.redirect('/api/pizza');
+                });
+            });
         });
-        res.redirect('/api/pizza');
     });
 });
 

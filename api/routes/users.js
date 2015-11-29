@@ -23,7 +23,7 @@ router.get('/profile', function(req, res, next) {
 });
 
 /* DELETE user */
-router.get('/del/:value', function(req, res, next){
+router.get('/delete/:value', function(req, res, next){
     utils.middleware(true, req, res, function() {
         console.log(req.params.value);
         User.
@@ -32,7 +32,7 @@ router.get('/del/:value', function(req, res, next){
                 res.json(user);
             });
     });
-}
+});
 
 router.get('/setup', function(req, res, next) {
     //res.render('setup', { title: 'Setup Page' });
