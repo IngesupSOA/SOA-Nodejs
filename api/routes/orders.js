@@ -188,7 +188,7 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res, next) {
         sizeType: "Large",
         doughType: "Classic"
     });
-    
+
     if(cookieJson == undefined || cookieJson == null) {
         //console.log('----------------createdOrder------------');
         var userJson = JSON.parse(new Cookies(req, res).get("user"));
@@ -202,6 +202,12 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res, next) {
         });
 
         orderToInsert.save();
+        Order.findOne({_id: orderToInsert._id}).populate("user").exec(function(err) {
+            if(err) console.log(err.message); else console.log('Populate User;');
+        });
+        Order.findOne({_id: orderToInsert._id}).populate("pizzaList").exec(function(err) {
+            if(err) console.log(err.message); else console.log('Populate Pizza');
+        });
         //console.log('----------------createdOrder1------------');
 
         new Cookies(req, res).set('order', JSON.stringify(orderToInsert), {
@@ -217,6 +223,9 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res, next) {
         //Ajout de la pizza
         pizzaToAdd.save();
         var UpdatedOrder = UtilsOrder.addPizzaIntoOrder(pizzaToAdd, JSON.parse(new Cookies(req, res).get("order")), req, res);
+        Order.findOne({_id: UpdatedOrder._id}).populate("pizzaList").exec(function(err) {
+            if(err) console.log(err.message); else console.log('Populate Pizza');
+        });
         //console.log('------------insert Pizza1----------------');
         new Cookies(req, res).set('order', JSON.stringify(UpdatedOrder), {
             httpOnly: true,
