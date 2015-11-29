@@ -95,7 +95,7 @@
         <div class="hs-content">
             <div class="container">
                 <div class="row">
-
+                    {% if user %}
                     <div class="hs-content col-xs-12 col-sm-8 col-sm-offset-2">
                         <div class="ht-form-block">
                             <div class="text-center">
@@ -135,7 +135,16 @@
                             </form>
                         </div>
                     </div>
-
+                    {% else if %}
+                    <div class="hs-content col-xs-12 col-sm-8 col-sm-offset-2">
+                        <div class="ht-form-block">
+                            <div class="text-center">
+                                <h3 class="heading">no user found</h3>
+                                <p>No uer found, lease login</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
