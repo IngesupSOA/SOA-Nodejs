@@ -93,32 +93,36 @@
                     <div class="widget-content">
                         <ul class="nav-tab" role="tablist">
                             <li role="presentation" class="active"><a href="#hw-tab-popular" aria-controls="hw-tab-popular" role="tab" data-toggle="tab">Popular</a></li>
-                            <li role="presentation"><a href="/api/orders/paypal" role="tab" data-toggle="tab"> Pay ({{ orderCookies.length }}) </a></li>
-                            <li role="presentation"><a href="/api/orders/cleanOrder" role="tab" data-toggle="tab"> Clean </a></li>
+                            <li role="presentation"><a href="/api/orders/paypal" role="tab" data-toggle="tab"> Pay ({{ orderCookies.pizzaList.length }}) </a></li>
+                            <li role="presentation"><a href="/api/orders/cleanOrder/{{orderCookies._id}}" role="tab" data-toggle="tab"> Clean </a></li>
                         </ul>
                         <!-- Tab panes -->
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane fade in active" id="hw-tab-popular">
                                 <article class="post">
-                                    <div class="content orderContent">
-                                        <h3> Commande </h3>
-                                        {% if !orderCookies.length %}
-                                        <p>Etat : {{ orderCookies.state }}</p>
-                                        <p>User : {{ orderCookies.user }}</p>
-                                        {% for orderPizza in orderCookies.pizzaList %}
+                                        <div class="content orderContent">
+                                            <h3> Commande </h3>
+                                            {% if !orderCookies.length %}
+                                            <p>State : {{ orderCookies.state }}</p>
+                                            <p>User : {{ orderCookies.user }}</p>
+                                            {% for orderPizza in orderCookies.pizzaList %}
 
-                                        <h4>{{orderPizza.name}} : {{orderPizza.price}} euros</h4>
-                                        <div class="meta-rate" title="user order">
-                                            {{orderPizza.description}}
+                                            <h4>{{orderPizza.name}} : <a href="/api/pizza/del/{{orderPizza._id}}">DeletePizza</a></h4>
+                                            <div class="meta-rate" title="user order">
+                                                Price : {{orderPizza.price}} euros <br/>
+                                                Desc : {{orderPizza.description}} <br/>
+                                                sizeType : {{orderPizza.sizeType}} <br/>
+                                                doughType : {{orderPizza.doughType}} <br/>
+
+                                            </div>
                                         </div>
                                         {% endfor %}
                                         {% endif %}
-                                    </div>
                                 </article>
                             </div>
-                            <div role="tabpanel" class="tab-pane fade"></div>
-                            <div role="tabpanel" class="tab-pane fade"></div>
                         </div>
+                            <div role="tabpanel" class="tab-pane fade"></div>
+                            <div role="tabpanel" class="tab-pane fade"></div>
                     </div>
                 </aside>
             </div>
