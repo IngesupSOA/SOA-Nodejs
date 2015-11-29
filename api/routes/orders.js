@@ -116,7 +116,13 @@ function parseOrderPaypalJson(paymentDescription, order){
     }
 }
 
+router.get('/cleanOrder', function(req, res) {
+    res.clearCookie('order');
+    res.redirect('/api/pizza');
+});
+
 router.get('/cleanOrder/:value1', function(req, res) {
+
     Order.findOne({_id: req.params.value1}, function(err,order) {
         if(err) console.log(err.message);
 
