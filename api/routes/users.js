@@ -24,13 +24,15 @@ router.get('/profile', function(req, res, next) {
 
 /* DELETE user */
 router.get('/del/:value', function(req, res, next){
-  console.log(req.params.value);
-  User.
-      remove({_id: req.params.value}).
-      exec(function(err, user){
-        res.json(user);
-      });
-});
+    utils.middleware(true, req, res, function() {
+        console.log(req.params.value);
+        User.
+            remove({_id: req.params.value}).
+            exec(function(err, user){
+                res.json(user);
+            });
+    });
+}
 
 router.get('/setup', function(req, res, next) {
     //res.render('setup', { title: 'Setup Page' });

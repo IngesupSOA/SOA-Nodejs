@@ -5,10 +5,13 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Pizza = mongoose.model('Pizza'),
     Order = mongoose.model('Order');
+var utils = require("../Utils/utils.js");
 
 /* GET admin home page. */
 router.get('/', function(req, res, next) {
-    res.render('admin');
+    utils.middleware(true, req, res, function() {
+        res.render('admin');
+    });
 });
 
 /* GET admin users page. */
