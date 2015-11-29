@@ -75,7 +75,7 @@ router.get('/del/:value1', function(req, res) {
                             httpOnly: true,
                             secure: false      // for your dev environment => true for prod
                         });
-                        // TODO: Exception if not clean, must redirect
+                        // TODO: Exception may happen
                         res.redirect('/api/pizza');
                     });
                 });
