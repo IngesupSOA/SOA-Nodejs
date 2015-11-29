@@ -14,13 +14,12 @@ var Pizza = mongoose.model('Pizza');
 var User = mongoose.model('User');
 var Class = mongoose.model('Class');
 
-router.get('/', function(req, res, next) {
+router.get('/getAll', function(req, res, next) {
     Order.
     find().
     exec(function(err, orders){
         res.json(orders);
     });
-    //new Cookies(req, res).set("order", "", { httpOnly: true, secure: false });
 });
 
 router.get('/paypal', function(req, res, next) {
@@ -169,9 +168,31 @@ function parseOrderPaypalJson(paymentDescription, order){
     }
 }
 
-router.get('/cleanOrder', function(req, res, next) {
+router.get('/cleanOrder/:value1', function(req, res, next) {
+    Order.findOne({_id: req.params.value1}, function(err,order) {
+        if(err) console.log(err.message);
+
+        order.pizzaList.forEach(function(item) {
+            Pizza.remove({_id: item}, function(err) {
+                if(err) console.log(err.message);
+            });
+        });
+
+        Order.remove({_id: order._id}, function(err) {
+            if(err) console.log(err.message);
+        });
+    });
+
     res.clearCookie('order');
     return res.redirect('/api/pizza');
+});
+
+router.get('/cleanOrderAll', function(req, res, next) {
+    Order.remove( function(err) {
+        if(err) console.log(err.message);
+    });
+    res.clearCookie('order');
+    return res.status(200).json({working:true});
 });
 
 router.get('/addPizza/name/:value1/price/:value2', function(req, res, next) {
@@ -226,7 +247,7 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res, next) {
         //console.log('------------insert Pizza----------------');
         //Ajout de la pizza
         pizzaToAdd.save();
-        var UpdatedOrder = UtilsOrder.addPizzaIntoOrder(pizzaToAdd, JSON.parse(new Cookies(req, res).get("order")), req, res);
+        var UpdatedOrder = UtilsOrder.addPizzaIntoOrder(pizzaToAdd, JSON.parse(new Cookies(req, res).get("order")));
         Order.findOne({_id: UpdatedOrder._id}).populate("pizzaList").exec(function(err) {
             if(err) console.log(err.message); else console.log('Populate Pizza');
         });
