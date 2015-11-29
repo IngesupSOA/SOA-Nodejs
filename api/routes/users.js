@@ -24,14 +24,14 @@ router.get('/profile', function(req, res, next) {
 
 /* DELETE user */
 router.get('/delete/:value', function(req, res, next){
-    //utils.middleware(true, req, res, function() {
+    utils.middleware(true, req, res, function() {
         console.log(req.params.value);
         User.
             remove({_id: req.params.value}).
             exec(function(err, user){
                 res.json(user);
             });
-    //});
+    });
 });
 
 router.post('/updUser', function(req, res, next) {
