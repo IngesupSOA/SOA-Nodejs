@@ -5,12 +5,13 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Pizza = mongoose.model('Pizza'),
     Order = mongoose.model('Order');
+var Cookies = require("cookies");
 var utils = require("../Utils/utils.js");
 
 /* GET admin home page. */
 router.get('/', function (req, res) {
     utils.middleware(true, req, res, function () {
-        res.render('admin');
+        res.redirect('/api/admin/orders');
     });
 });
 
@@ -20,8 +21,10 @@ router.get('/users', function (req, res) {
     find().
     exec(function (err, usersRet) {
         if (err) throw err;
+        var cookieUser = JSON.parse(new Cookies(req, res).get("user"));
+
         console.log(usersRet);
-        res.render('back-users', {users: usersRet});
+        res.render('back-users', {users: usersRet, currentUser: cookieUser});
     });
     //res.write('hello');
 });
@@ -39,8 +42,10 @@ router.get('/users/delete/:value', function (req, res) {
 });
 
 /* GET admin orders page. */
+//TODO get the pizzas and user related to the order
+//create an object and push it in, then send all this to swig
+//eviter de recup la base entière :)
 router.get('/orders', function (req, res) {
-    var ordersList = [];
     Order.
     find().
     exec(function (err, orders) {
@@ -55,35 +60,8 @@ router.get('/orders', function (req, res) {
                res.render('back-orders', {orders: orders, users: users, pizzas: pizzas});
             });
         });
-
-        //orders.forEach(function (order) {
-        //    var pizzaListTemp = [];
-        //
-        //    order.pizzaList.forEach(function (pizza) {
-        //        Pizza.findOne({_id: pizza}, function (err, pizza, next) {
-        //            pizzaListTemp.push(pizza);
-        //            next();
-        //        });
-        //    });
-        //
-        //    order.pizzaList = pizzaListTemp;
-        //
-        //    User.findOne({_id: order.user}, function (err, user, next) {
-        //        order.user = user;
-        //        next();
-        //    })
-        //
-        //    ordersList.push(order);
-        //
-        //});
-
-        //console.log(ordersList);
-        //res.json(ordersList);
-        //res.render('back-orders', {orders: ordersList});
     });
 });
-    //TODO get the pizzas and user related to the order
-    //create an object and push it in, then send all this to swig
 
     /* GET admin orders page. */
     router.post('/orders/:orderId', function (req, res) {
