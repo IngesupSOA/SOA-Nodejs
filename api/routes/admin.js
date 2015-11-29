@@ -8,56 +8,91 @@ var mongoose = require('mongoose'),
 var utils = require("../Utils/utils.js");
 
 /* GET admin home page. */
-router.get('/', function(req, res) {
-    utils.middleware(true, req, res, function() {
+router.get('/', function (req, res) {
+    utils.middleware(true, req, res, function () {
         res.render('admin');
     });
 });
 
 /* GET admin users page. */
-router.get('/users', function(req, res) {
+router.get('/users', function (req, res) {
     User.
     find().
-    exec(function(err, users){
-        if(err) throw err;
-        res.render('back-users', { users : users });
+    exec(function (err, usersRet) {
+        if (err) throw err;
+        console.log(usersRet);
+        res.render('back-users', {users: usersRet});
     });
     //res.write('hello');
 });
 
 /* GET admin users page. */
-router.get('/users/delete/:value', function(req, res) {
+router.get('/users/delete/:value', function (req, res) {
     console.log(req.params.value);
     User.
     remove({_id: req.params.value}).
-    exec(function(err, user){
+    exec(function (err, user) {
+        if (err) throw err;
         res.redirect('/api/admin/users');
     });
     //res.write('hello');
 });
 
 /* GET admin orders page. */
-router.get('/orders', function(req, res) {
+router.get('/orders', function (req, res) {
+    var ordersList = [];
     Order.
     find().
-    exec(function(err, orders){
-        if(err) console.log(err);
-        //TODO get the pizzas and user related to the order
-        //create an object and push it in, then send all this to swig
-        console.log(orders);
-        res.render('back-orders', { orders : JSON.stringify(orders) });
-    });
-    //res.write('hello');
-});
+    exec(function (err, orders) {
+        if (err) console.log(err);
 
-/* GET admin orders page. */
-router.post('/orders/:orderId', function(req, res) {
-    Order.
-    find().
-    exec(function(err, orders){
-        res.render('back-orders',orders);
-    });
-    //res.write('hello');
-});
+        User.
+            find().exec(function(err, users){
+            if (err) console.log(err);
 
-module.exports = router;
+            Pizza.find().exec(function(err, pizzas){
+                //res.json(pizzas);
+               res.render('back-orders', {orders: orders, users: users, pizzas: pizzas});
+            });
+        });
+
+        //orders.forEach(function (order) {
+        //    var pizzaListTemp = [];
+        //
+        //    order.pizzaList.forEach(function (pizza) {
+        //        Pizza.findOne({_id: pizza}, function (err, pizza, next) {
+        //            pizzaListTemp.push(pizza);
+        //            next();
+        //        });
+        //    });
+        //
+        //    order.pizzaList = pizzaListTemp;
+        //
+        //    User.findOne({_id: order.user}, function (err, user, next) {
+        //        order.user = user;
+        //        next();
+        //    })
+        //
+        //    ordersList.push(order);
+        //
+        //});
+
+        //console.log(ordersList);
+        //res.json(ordersList);
+        //res.render('back-orders', {orders: ordersList});
+    });
+});
+    //TODO get the pizzas and user related to the order
+    //create an object and push it in, then send all this to swig
+
+    /* GET admin orders page. */
+    router.post('/orders/:orderId', function (req, res) {
+        Order.
+        find().
+        exec(function (err, orders) {
+            res.render('back-orders', orders);
+        });
+        //res.write('hello');
+    });
+
+    module.exports = router;

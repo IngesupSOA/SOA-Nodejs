@@ -9,7 +9,8 @@
     <meta name="author" content="">
     <link rel="profile" href="#">
 
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="format-detection" content="telephone-no">
 
     <link href='http://fonts.googleapis.com/css?family=Raleway:300,400,700,900' rel='stylesheet' type='text/css'>
@@ -52,30 +53,33 @@
             </ul>
         </div>
 
-        <div id="undefined-sticky-wrapper" class="sticky-wrapper" style="height: 100px;"><div class="ht-main-navbar logo-center sticky-nav scroll-up-nav">
-            <div class="container">
-                <div class="inner">
-                    <h1 id="ht-logo">
-                        <a href="/api/pizza/">
-                            <img class="logo-top" src="/images/logo.png" alt="">
-                        </a>
-                        Realty
-                    </h1>
-                    <div class="ht-main-nav-wrapper">
-                        <nav id="ht-main-nav">
-                            <ul>
-                                <li><a href="/api/pizza/">Pizzas</a></li>
-                                <li><a href="/api/users/profile">Profile</a></li>
-                            </ul>
-                            <ul>
-                                <li><a href="/api/admin/">Admin</a></li>
-                                <li><a href="/api/logout">Logout</a></li>
-                            </ul>
-                        </nav>
+        <div id="undefined-sticky-wrapper" class="sticky-wrapper" style="height: 100px;">
+            <div class="ht-main-navbar logo-center sticky-nav scroll-up-nav">
+                <div class="container">
+                    <div class="inner">
+                        <h1 id="ht-logo">
+                            <a href="/api/pizza/">
+                                <img class="logo-top" src="/images/logo.png" alt="">
+                            </a>
+                            Realty
+                        </h1>
+
+                        <div class="ht-main-nav-wrapper">
+                            <nav id="ht-main-nav">
+                                <ul>
+                                    <li><a href="/api/pizza/">Pizzas</a></li>
+                                    <li><a href="/api/users/profile">Profile</a></li>
+                                </ul>
+                                <ul>
+                                    <li><a href="/api/admin/">Admin</a></li>
+                                    <li><a href="/api/logout">Logout</a></li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div></div>
+        </div>
     </header>
 
     <div class="ht-page-header">
@@ -94,36 +98,39 @@
     <div class="ht-section hs-editors grid">
         <div class="hs-content">
             <div class="container">
-                <div class="row">
 
                     {% for order in orders %}
-                    <p>{{order.user}}</p>
-                    <!--{% for user in order.user.username %}-->
-                    <!--<div class="entry col-xs-12 col-sm-3">-->
-                        <!--&lt;!&ndash;<div class="entry-media">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<div class="display-orders-name">&ndash;&gt;-->
-                                <!--&lt;!&ndash;{{user.username}}&ndash;&gt;-->
-                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                        <!--<h3 class="entry-name">{{user.username}}</h3>-->
+                    <hr>
+                    <div class="row">
+                        {% for user in users %}
+                        <div class="bo-order-user">
+                            {% if user.id == order.user %}
+                                    <h3>Order's user: {{user.username}}</h3>
 
-                            <!--&lt;!&ndash;{% for pizza in order.pizzaList %}&ndash;&gt;-->
-                            <!--&lt;!&ndash;<div class="entry col-xs-12 col-sm-3">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<h3 class="entry-name">{{pizza.name}}</h3>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<p class="entry-position">{{ pizza.price }}</p>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                            <!--&lt;!&ndash;{% endfor %}&ndash;&gt;-->
-                            <!--&lt;!&ndash;<p class="entry-position">{{ order.state }}</p>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<div class="entry-social">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<div class="entry-social-inner">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<a href="/api/orders/addPizza" class="fa fa-shopping-basket">Add to basket</a>&ndash;&gt;-->
-                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--</div>-->
-                    <!--{% endfor %}-->
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                        <h3>Order details: {{order.state}}</h3>
+                        {% for pizzaId in order.pizzaList %}
+                        <div class="bo-order-pizzalist">
+                            {% for pizza in pizzas %}
+                                {% if pizza.id == pizzaId %}
+                                <div class="bo-order-pizza">
+                                    <h4>Pizza details:</h4>
+                                    <li>{{pizza.name}}</li>
+                                    <li>{{pizza.description}}</li>
+                                    <li>{{pizza.price}}</li>
+                                    <li>{{pizza.sizeType}}</li>
+                                    <li>{{pizza.doughType}}</li>
+                                </div>
+                                {% endif %}
+
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
                     {% endfor %}
 
-                </div>
             </div>
         </div>
     </div>

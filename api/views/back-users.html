@@ -106,13 +106,13 @@
                     </div>
                     <div class="row-admin">
                         <div class="is-admin">
-                            {{user.admin}}
+                            <h4>Admin:{{user.admin}}</h4>
                         </div>
                     </div>
                     <div class="row-status">
                         <!--TODO Add isActive field in user model to display activness -->
-                        <div class="active">Yes/No dummy</div>
-                        <a class="delete" title="Delete user" href="/api/admin/users/delete/{{user._id}}"> Delete user
+                        <!--<div class="active">Yes/No dummy</div>-->
+                        <a class="delete" title="Delete user" href="/api/admin/users/delete/{{user.id}}"> Delete user
                             <!--<span class="icon icon-delete">-->
                                 <!---->
                             <!--</span>-->
