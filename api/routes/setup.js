@@ -4,15 +4,12 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-
 var User = require('../models/UserDB');
 var User = mongoose.model('User');
 //console.log(User);
 var Class = mongoose.model('Class');
 
-router.get('/setup', function(req, res, next) {
-    //res.render('setup', { title: 'Setup Page' });
-        // create a sample user
+router.get('/setup', function(req, res) {
     var class1 = new Class({
         name: 'Expert 1',
         school: 'Ingésup Lyon',

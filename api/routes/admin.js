@@ -8,14 +8,14 @@ var mongoose = require('mongoose'),
 var utils = require("../Utils/utils.js");
 
 /* GET admin home page. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
     utils.middleware(true, req, res, function() {
         res.render('admin');
     });
 });
 
 /* GET admin users page. */
-router.get('/users', function(req, res, next) {
+router.get('/users', function(req, res) {
     User.
     find().
     exec(function(err, users){
@@ -26,7 +26,7 @@ router.get('/users', function(req, res, next) {
 });
 
 /* GET admin users page. */
-router.get('/users/delete/:value', function(req, res, next) {
+router.get('/users/delete/:value', function(req, res) {
     console.log(req.params.value);
     User.
     remove({_id: req.params.value}).
@@ -37,7 +37,7 @@ router.get('/users/delete/:value', function(req, res, next) {
 });
 
 /* GET admin orders page. */
-router.get('/orders', function(req, res, next) {
+router.get('/orders', function(req, res) {
     Order.
     find().
     exec(function(err, orders){
@@ -51,7 +51,7 @@ router.get('/orders', function(req, res, next) {
 });
 
 /* GET admin orders page. */
-router.post('/orders/:orderId', function(req, res, next) {
+router.post('/orders/:orderId', function(req, res) {
     Order.
     find().
     exec(function(err, orders){

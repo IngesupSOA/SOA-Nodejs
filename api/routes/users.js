@@ -8,7 +8,7 @@ var express = require('express'),
 var router = express.Router();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   User.
       find().
       exec(function(err, users){
@@ -17,13 +17,13 @@ router.get('/', function(req, res, next) {
 });
 
 // TODO: Check why it throw an error (500)
-router.get('/profile', function(req, res, next) {
+router.get('/profile', function(req, res) {
     var cookieUser = JSON.parse(new Cookies(req, res).get("user"));
     res.render('profile', { user : cookieUser });
 });
 
 /* DELETE user */
-router.get('/delete/:value', function(req, res, next){
+router.get('/delete/:value', function(req, res){
     utils.middleware(true, req, res, function() {
         console.log(req.params.value);
         User.
@@ -111,7 +111,7 @@ router.post('/updUser', function(req, res, next) {
 });
 
 
-router.get('/setup', function(req, res, next) {
+router.get('/setup', function(req, res) {
     //res.render('setup', { title: 'Setup Page' });
     // create a sample user
     var class1 = new Class({

@@ -4,11 +4,6 @@ var router = express.Router();
 var paypal = require('paypal-rest-sdk');
 var Cookies = require("cookies");
 var UtilsOrder = require('../Utils/orderUtils');
-
-var OrderDB = require('../Models/OrderDB');
-var PizzaDB = require('../Models/PizzaDB');
-//var UserDB = require('../Models/UserDB');
-//var ClassDB = require('../Models/ClassDB');
 var Order = mongoose.model('Order');
 var Pizza = mongoose.model('Pizza');
 var User = mongoose.model('User');
@@ -84,7 +79,7 @@ router.get('/paypal', function(req, res, next) {
     }
 });
 
-router.get('/success', function(req, res, next) {
+router.get('/success', function(req, res) {
     var cookieOrder = new Cookies(req, res).get("order");
     var cookieJson = JSON.parse(cookieOrder);
     Order.
@@ -93,14 +88,13 @@ router.get('/success', function(req, res, next) {
             state: "payed"
         }},
         {multi:true}).
-    exec(function(err, order){
-
-            res.clearCookie('order');
+    exec(function(){
+        res.clearCookie('order');
         res.redirect('/api/pizza/');
     });
 });
 
-router.get('/fail', function(req, res, next) {
+router.get('/fail', function(req, res) {
     res.redirect('/api/pizza/');
 });
 
@@ -122,7 +116,7 @@ function parseOrderPaypalJson(paymentDescription, order){
     }
 }
 
-router.get('/cleanOrder/:value1', function(req, res, next) {
+router.get('/cleanOrder/:value1', function(req, res) {
     Order.findOne({_id: req.params.value1}, function(err,order) {
         if(err) console.log(err.message);
 
@@ -141,7 +135,7 @@ router.get('/cleanOrder/:value1', function(req, res, next) {
     return res.redirect('/api/pizza');
 });
 
-router.get('/cleanOrderAll', function(req, res, next) {
+router.get('/cleanOrderAll', function(req, res) {
     Order.remove( function(err) {
         if(err) console.log(err.message);
     });
@@ -149,7 +143,7 @@ router.get('/cleanOrderAll', function(req, res, next) {
     return res.status(200).json({working:true});
 });
 
-router.get('/addPizza/name/:value1/price/:value2', function(req, res, next) {
+router.get('/addPizza/name/:value1/price/:value2', function(req, res) {
     var cookieJson = new Cookies(req, res).get("order");
 
     var firstPizza = new Pizza({

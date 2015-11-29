@@ -14,7 +14,6 @@ var debug = require('debug')('app:routes:default' + process.pid),
     config = require("../Utils/config.js"),
     Router = require("express").Router,
     UnauthorizedAccessError = require(path.join(__dirname, "..", "errors", "UnauthorizedAccessError.js")),
-    //User = require(path.join(__dirname, "..", "models", "userDB.js")),
     User = mongoose.model('User'),
     jwt = require("express-jwt"),
     Cookies = require("cookies"),
@@ -71,7 +70,7 @@ module.exports = function () {
 
     var router = new Router();
 
-    router.route("/logout").get(function (req, res, next) {
+    router.route("/logout").get(function (req, res) {
         res.clearCookie('access_token');
         res.clearCookie('user');
         res.clearCookie('order');
@@ -88,17 +87,17 @@ module.exports = function () {
     });
 
 
-    router.route("/verify").get(function (req, res, next) {
+    router.route("/verify").get(function (req, res) {
         //router.use(utils.middleware());
         return res.status(200).json({working:true});
     });
 
-    router.route("/index").get(function (req, res, next) {
+    router.route("/index").get(function (req, res) {
         //router.use(utils.middleware());
         return res.render('index', {title: 'Accueil'});
     });
 
-    router.route("/").get(function (req, res, next) {
+    router.route("/").get(function (req, res) {
         //router.use(utils.middleware());
         return res.redirect('/api/index');
     });
