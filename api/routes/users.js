@@ -22,21 +22,14 @@ router.get('/profile', function(req, res, next) {
     res.render('profile', { user : cookieUser });
 });
 
-
-
 /* DELETE user */
 router.get('/del/:value', function(req, res, next){
   console.log(req.params.value);
   User.
-      remove({lastname: req.params.value}).
+      remove({_id: req.params.value}).
       exec(function(err, user){
         res.json(user);
       });
-});
-
-/* CREATE user */
-router.get('/add', function(req, res, next){
-  res.render('add', {title: 'Add a user'});
 });
 
 router.get('/setup', function(req, res, next) {
@@ -67,35 +60,6 @@ router.get('/setup', function(req, res, next) {
             console.log('User saved successfully');
             res.json({ success: true });
         });
-});
-
-router.post('/add', function(req, res, next){
-  new User ({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    age: req.body.age,
-    update_at: Date.now()
-  }).save(function(err, user, count){
-        if(err){
-          res.send(err.message);
-        }
-        else
-          res.redirect('/users');
-      });
-});
-
-/* UPDATE user */
-router.get('/update/:lastname/:value', function(req, res, next){
-  User.
-      update({lastname: req.params.lastname},
-      {$set: {
-        firstname: req.params.value
-      }},
-      {multi:true}).
-      exec(function(err, user){
-        //res.json(user);
-        res.redirect('/users/');
-      });
 });
 
 module.exports = router;
