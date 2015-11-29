@@ -97,13 +97,16 @@
                                         <div class="content orderContent">
                                             <h3> Commande </h3>
                                             {% if !orderCookies.length %}
-                                            <p>Etat : {{ orderCookies.state }}</p>
+                                            <p>State : {{ orderCookies.state }}</p>
                                             <p>User : {{ orderCookies.user }}</p>
                                             {% for orderPizza in orderCookies.pizzaList %}
 
-                                            <h4>{{orderPizza.name}} : {{orderPizza.price}} euros</h4>
+                                            <h4>{{orderPizza.name}} : <a href="/api/pizza/del/{{orderPizza._id}}">DeletePizza</a></h4>
                                             <div class="meta-rate" title="user order">
-                                                {{orderPizza.description}}
+                                                Price : {{orderPizza.price}} euros <br/>
+                                                Desc : {{orderPizza.description}} <br/>
+                                                sizeType : {{orderPizza.sizeType}} <br/>
+                                                doughType : {{orderPizza.doughType}} <br/>
                                             </div>
                                             {% endfor %}
                                             {% endif %}
@@ -112,9 +115,10 @@
                             </div>
                         </div>
                     </div>
+                    {% if !orderCookies.length %}
                     <a href="/api/orders/paypal">Commander</a>
-                        <a href="/api/orders/cleanOrder">Vider le panier</a>
-
+                        <a href="/api/orders/cleanOrder/{{orderCookies._id}}">Vider le panier</a>
+                    {% endif %}
                 </aside>
             </div>
 
