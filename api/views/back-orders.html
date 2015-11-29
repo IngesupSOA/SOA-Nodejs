@@ -94,43 +94,33 @@
     <div class="ht-section hs-editors grid">
         <div class="hs-content">
             <div class="container">
-
-                <div class="row">
-
-                    <p>content goes here</p>
-
-                </div>
-                <div class="row">
-
-                    <p>content goes here</p>
-
-                </div>
                 <div class="row">
 
                     {% for order in orders %}
-                    {% for user in order.user.username %}
-                    <div class="entry col-xs-12 col-sm-3">
-                        <!--<div class="entry-media">-->
-                            <!--<div class="display-orders-name">-->
-                                <!--{{user.username}}-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <h3 class="entry-name">{{user.username}}</h3>
+                    <p>{{order.user}}</p>
+                    <!--{% for user in order.user.username %}-->
+                    <!--<div class="entry col-xs-12 col-sm-3">-->
+                        <!--&lt;!&ndash;<div class="entry-media">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="display-orders-name">&ndash;&gt;-->
+                                <!--&lt;!&ndash;{{user.username}}&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--<h3 class="entry-name">{{user.username}}</h3>-->
 
-                            <!--{% for pizza in order.pizzaList %}-->
-                            <!--<div class="entry col-xs-12 col-sm-3">-->
-                                <!--<h3 class="entry-name">{{pizza.name}}</h3>-->
-                                <!--<p class="entry-position">{{ pizza.price }}</p>-->
-                            <!--</div>-->
-                            <!--{% endfor %}-->
-                            <!--<p class="entry-position">{{ order.state }}</p>-->
-                            <!--<div class="entry-social">-->
-                                <!--<div class="entry-social-inner">-->
-                                    <!--<a href="/api/orders/addPizza" class="fa fa-shopping-basket">Add to basket</a>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                    </div>
-                    {% endfor %}
+                            <!--&lt;!&ndash;{% for pizza in order.pizzaList %}&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="entry col-xs-12 col-sm-3">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<h3 class="entry-name">{{pizza.name}}</h3>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<p class="entry-position">{{ pizza.price }}</p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;{% endfor %}&ndash;&gt;-->
+                            <!--&lt;!&ndash;<p class="entry-position">{{ order.state }}</p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="entry-social">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div class="entry-social-inner">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<a href="/api/orders/addPizza" class="fa fa-shopping-basket">Add to basket</a>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--{% endfor %}-->
                     {% endfor %}
 
                 </div>

@@ -39,8 +39,10 @@ router.get('/orders', function(req, res, next) {
     find().
     exec(function(err, orders){
         if(err) console.log(err);
+        //TODO get the pizzas and user related to the order
+        //create an object and push it in, then send all this to swig
         console.log(orders);
-        res.render('back-orders', { orders : JSON.parse(orders) });
+        res.render('back-orders', { orders : JSON.stringify(orders) });
     });
     //res.write('hello');
 });
