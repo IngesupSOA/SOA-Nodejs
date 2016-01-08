@@ -4,41 +4,44 @@
 "use strict";
 
 var debug = require('debug')('app:utils:' + process.pid),
-    path = require('path'),
-    util = require('util'),
     Cookies = require("cookies"),
     uuid = require('uuid'),
     nJwt = require('nJwt'),
+    jwt = require('jsonwebtoken'),
     secretKey = uuid.v4(),
+    config = require('../config.json'),
     _ = require("lodash"),
+    mongoose = require('mongoose'),
+    User = require('../models/UserDB'),
+    User = mongoose.model('User'),
 
     TOKEN_EXPIRATION = 60 * 60,
     TOKEN_EXPIRATION_SEC = TOKEN_EXPIRATION * 60,
     UnauthorizedAccessError = require('../errors/UnauthorizedAccessError.js'),
     NotFoundError = require('../errors/NotFoundError.js');
 
-module.exports.createToken = function (user, req, res, next) {
+module.exports.createToken = function createToken (user) {
+
     if (_.isEmpty(user)) {
         return next(new Error('User data cannot be empty.'));
     }
 
-    //Creating claims to build token
-    var claims = {
-        sub: user._id,
-        iss: 'http://localhost/api',
-        //TODO Handle permissions to set them accordingly to the user trying to connect
-        scope: 'self api/users api/login api/verify'
-    };
-    var jwt = nJwt.create(claims, secretKey);
-    jwt.setExpiration(new Date().getTime() + (60 * 60 * 1000)); // One hour from now
-    var token = jwt.compact();
+    var token = jwt.sign(user, config.secret);
+    return token;
+};
 
-    new Cookies(req, res).set('access_token', token, {
+module.exports.createCookie = function(jsonToken, url, req, res) {
+
+    new Cookies(req, res).set('access_token', jsonToken, {
         httpOnly: true,
         secure: false
     });
 
-    return next();
+    if(url == null)
+        res.redirect('/api/pizza/getAll');
+    else
+        res.redirect(url);
+
 };
 
 module.exports.verify = function (req, res, next) {
@@ -56,56 +59,81 @@ module.exports.verify = function (req, res, next) {
     });
 };
 
-module.exports.fetch = function (req, res, next) {
-    var token = new Cookies(req, res).get('access_token');
-
-    if (!_.isUndefined(token) && !_.isNull(token)) {
-        return next(new NotFoundError("Token not defined or revoked"));
+module.exports.isDisconnectedLink = function(link){
+    var dbl, dsl;
+    for(var i =0; i < config.disconnectedBeginLinks.length; i++){
+        dbl = config.disconnectedBeginLinks[i];
+        if(link.indexOf(dbl) == 0)
+            return true;
     }
-    else if (_.isEmpty(token)) {
-        return next(new NotFoundError("Invalid token"));
+    for(var i =0; i < config.disconnectedStrictLinks.length; i++){
+        dsl = config.disconnectedStrictLinks[i];
+        if(link == dsl ||link == dsl + '/')
+            return true;
     }
-    else
-        return token;
-};
+    return false;
+}
 
-module.exports.middleware = function (admin, req, res, next) {
-    console.log("In tokenHandler middleware");
+module.exports.isAdminRequiredLink = function(link){
+    var arbl, arsl;
+    for(var i =0; i < config.adminRequiredBeginLinks.length; i++){
+        arbl = config.adminRequiredBeginLinks[i];
+        if(link.indexOf(arbl) == 0)
+            return true;
+    }
+    for(var i =0; i < config.adminRequiredStrictLinks.length; i++){
+        arsl = config.adminRequiredStrictLinks[i];
+        if(link == arsl ||link == arsl + '/')
+            return true;
+    }
+    return false;
+}
 
-    /*
-    var func = function (req, res, next) {
-        exports.verify(req, res, next, function (err, token) {
-            console.log("hello");
-            if (err) {
-                req.user = undefined;
-                console.log(err); // Token has expired, has been tampered with, etc
-                return next(new UnauthorizedAccessError("invalid_token", token));
+
+module.exports.authenticate = function (req, res, next) {
+
+    console.log("Processing authenticate middleware");
+
+    var username = req.body.username,
+        password = req.body.password;
+
+    if (_.isEmpty(username) || _.isEmpty(password)) {
+        return next(new UnauthorizedAccessError("401", {
+            message: 'Invalid username or password'
+        }));
+    }
+
+    User.findOne({
+        username: username
+    }, function (err, user) {
+        if (err || !user) {
+            console.log(err);
+            return next(new UnauthorizedAccessError("401", {
+                message: 'Invalid username or password'
+            }));
+        }
+
+        user.comparePassword(password, function (err, isMatch) {
+            if (isMatch && !err) {
+
+                /*new Cookies(req, res).set('user', JSON.stringify(user), {
+                    httpOnly: true,
+                    secure: false      // for your dev environment => true for prod
+                });*/
+
+                exports.createCookie(exports.createToken(user), null, req, res);
             } else {
-                console.log('Token verified: OK'+token);
-                req.user = _.merge(req.user, token);
-                next();
+                return next(new UnauthorizedAccessError("401", {
+                    message: 'Invalid username or password'
+                }));
             }
         });
-    };
+    });
 
-    func.unless = require("express-unless");
-    console.log("hello2");
-    return func;
-    */
-    var access_token = new Cookies(req, res).get("access_token");
-    var user = new Cookies(req, res).get("user");
-    var userJson;
-    if(user != undefined && user != null && user != "")
-        userJson = JSON.parse(user);
-
-    if (access_token == undefined || access_token == null || access_token == "" || (admin && !userJson.admin)) {
-        return res.redirect('/api/login');
-    }else{
-        return next(req, res, next);
-    }
 };
+
 
 module.exports.TOKEN_EXPIRATION = TOKEN_EXPIRATION;
 module.exports.TOKEN_EXPIRATION_SEC = TOKEN_EXPIRATION_SEC;
 
-console.log("Loaded");
+console.log("-- Utils loaded --");

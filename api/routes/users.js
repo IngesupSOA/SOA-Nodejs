@@ -5,6 +5,9 @@ var express = require('express'),
     Class = mongoose.model('Class'),
     bcrypt = require("bcryptjs"),
     Cookies = require("cookies");
+var utils = require("../Utils/utils.js");
+var config = require('../config.json');
+var jwt = require('jsonwebtoken');
 var router = express.Router();
 
 /* GET users listing. */
@@ -18,8 +21,15 @@ router.get('/', function(req, res) {
 
 // TODO: Check why it throw an error (500)
 router.get('/profile', function(req, res) {
-    var cookieUser = JSON.parse(new Cookies(req, res).get("user"));
-    res.render('profile', { user : cookieUser });
+    var token = new Cookies(req, res).get('access_token');
+    var user = jwt.decode(token, config.secret);
+    res.render('User/profile', { user : user });
+});
+
+router.get('/Profile/:value', function(req, res) {
+    var token = new Cookies(req, res).get('access_token');
+    var user = jwt.decode(token, config.secret);
+    res.render('User/profile', { user : user ,profileUpdated : req.params.value});
 });
 
 /* DELETE user */
@@ -35,18 +45,9 @@ router.get('/delete/:value', function(req, res){
 });
 
 router.post('/updUser', function(req, res, next) {
-
-    console.log(req.body.password);
-
-    if(req.body.password == '')
-    {
-        console.log('ok');
-    }
-
     User.
-         update({
-            _id: req.body.userId
-        },
+         update(
+        {_id: req.body.userId},
         {$set: {
             firstname: req.body.firstname,
             lastname: req.body.lastname,
@@ -57,59 +58,70 @@ router.post('/updUser', function(req, res, next) {
         }},
         {multi: true}
         ).exec(function(err) {
-            if (err) console.log(err.message);
+            if (err)
+                console.log(err.message);
+            else
+            {
+
+                User.findOne({_id: req.body.userId}, function(err,user) {
+                    utils.createCookie(utils.createToken(user), '/api/users/Profile/Le profile a été mis à jour !', req, res);
+                });
+            }
+
         });
+
+});
+
+router.post('/updUserPass', function(req, res, next) {
 
     if(req.body.password == '')
     {
-        User.findOne({_id: req.body.userId}, function(err,user) {
+        User.findOne({_id: req.body.userId}, function(err) {
             if(err) console.log(err.message);
 
-            new Cookies(req, res).set('user', JSON.stringify(user), {
-                httpOnly: true,
-                secure: false      // for your dev environment => true for prod
-            });
             res.redirect('/api/users/profile');
         });
     }
     else
     {
-        bcrypt.genSalt(10, function (err, salt) {
-            if (err) {
-                return next(err);
-            }
-            bcrypt.hash(req.body.password, salt, function (err, hash) {
+        if(req.body.password == req.body.checkPass)
+        {
+            bcrypt.genSalt(10, function (err, salt) {
                 if (err) {
                     return next(err);
                 }
-                if (req.body.password != '')
-                {
-                    User.
+                bcrypt.hash(req.body.password, salt, function (err, hash) {
+                    if (err) {
+                        return next(err);
+                    }
+                    if (req.body.password != '')
+                    {
+                        User.
                             update(
-                            {_id: req.body.userId},
+                            {_id: req.body.userIdPass},
                             {$set: {password: hash}}
-                    ).exec(function (err, user) {
-                            if(err) console.log(err.message);
-
-                            User.findOne({_id: req.body.userId}, function(err,user) {
+                        ).exec(function (err) {
                                 if(err) console.log(err.message);
 
-                                new Cookies(req, res).set('user', JSON.stringify(user), {
-                                    httpOnly: true,
-                                    secure: false      // for your dev environment => true for prod
+                                User.findOne({_id: req.body.userIdPass}, function(err,user) {
+                                    if(err) console.log(err.message);
+
+                                    utils.createCookie(utils.createToken(user), '/api/users/Profile/Le mot de passe a été mis à jour !', req, res);
                                 });
-                                res.redirect('/api/users/profile');
                             });
-                    });
-                }
+                    }
+                });
             });
-        });
+        }
+        else
+        {
+            res.redirect('/api/users/Profile/Les deux mots de passe ne sont pas identiques !');
+        }
+
 
     }
 
-
 });
-
 
 router.get('/setup', function(req, res) {
     //res.render('setup', { title: 'Setup Page' });
@@ -121,15 +133,15 @@ router.get('/setup', function(req, res) {
         updated_at: Date.now()
     });
     var nick = new User({
-        firstname: 'Jeremie',
-        lastname: 'Bartolli',
-        username: 'Bart',
-        email: 'test.test@gmail.com',
-        password: 'password',
+        firstname: 'Thomas',
+        lastname: 'Doret',
+        username: 'admin',
+        email: 'thomas.doret33@gmail.com',
+        password: 'admin',
         avatar: 'yoloAvatar',
         address: 'No address',
-        phoneNumber: '0102030405',
-        admin: false,
+        phoneNumber: '0684350295',
+        admin: true,
         class: class1,
         created_on: Date.now(),
         updated_at: Date.now()

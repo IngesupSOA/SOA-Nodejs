@@ -17,7 +17,7 @@ var User = new Schema({
     email: { type: String, required: true },
     password: { type: String, required: true},
     avatar: { type: String, required: true},
-    address: { type: String, required: true},
+    address: { type: String },
     phoneNumber: { type: String, required: true},
     admin: { type: Boolean, required: true },
     class: { type: Schema.ObjectId, ref: 'Class', required: true },

@@ -20,6 +20,8 @@
 
 3. MODULES
    3.1. FORM
+
+4. CUSTOM
 -----------------------------------------------------------
 -----------------------------------------------------------
 ------------------- END TABLE OF CONTENT ------------------*/
@@ -725,12 +727,12 @@ dd {
   bottom: 6px;
 }
 .ht-page-header .container {
-  height: 150px;
+  height: 90px;
   display: table;
 }
 .ht-page-header .inner {
   display: table-cell;
-  vertical-align: middle;
+  /*vertical-align: middle;*/
 }
 .ht-page-header .heading {
   font-size: 30px;
@@ -2405,8 +2407,12 @@ dd {
   color: #f7f7f7;
   font-weight: 700;
   overflow: hidden;
-  padding: 40px 0 35px;
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  width: 100% !important;
+  /*height: 3% !important;*/
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 #ht-footer:before {
   content: '';
@@ -4786,14 +4792,18 @@ dd {
 ---------------------------------------*/
 .ht-sidebar {
   position: fixed;
-  width: 250px;
+  width: 20%;
   float: right;
   margin-right: 0px;
   right: 10px;
   z-index: 999;
   background-color: rgb(163, 169, 166);
   max-height: 350px;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
+
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
 }
 .ht-widget {
   margin-bottom: 30px;
@@ -7495,8 +7505,11 @@ select[multiple].input-lg {
 }
 
 .ht-form-block, .login-form form, .register-form form {
-  background: rgba(0, 0, 0, 0.05);
+  background: rgba(0, 0, 0, 0.1);
   padding: 30px 15px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 @media (min-width: 768px) {
   .ht-form-block, .login-form form, .register-form form {
@@ -7546,7 +7559,13 @@ select[multiple].input-lg {
 }
 .ht-form-block .submit-group, .login-form form .submit-group, .register-form form .submit-group {
   margin-top: 30px;
+  margin-right: 15px;
 }
+
+.updpass-group {
+  float: right;
+}
+
 .ht-form-block .submit-group .ht-button, .ht-form-block .submit-group .hs-events.list .event-filter button, .hs-events.list .event-filter .ht-form-block .submit-group button, .login-form form .submit-group .ht-button, .login-form form .submit-group .hs-events.list .event-filter button, .hs-events.list .event-filter .login-form form .submit-group button, .register-form form .submit-group .ht-button, .register-form form .submit-group .hs-events.list .event-filter button, .hs-events.list .event-filter .register-form form .submit-group button {
   float: right;
 }
@@ -8111,6 +8130,7 @@ tbody.collapse.in {
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   border-radius: 50px;
+  float: right;
 }
 .ht-button:hover, .hs-events.list .event-filter button:hover,
 .login-form .button-primary:hover,
@@ -8627,10 +8647,23 @@ table th[class*="col-"] {
   visibility: visible;
 }
 
+.tab-content {
+    overflow-y: scroll;
+}
+
 .nav-tabs .dropdown-menu {
   margin-top: -1px;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
+}
+
+/* 4 CUSTOM */
+.signUpRappel{
+  font-weight: bold;
+}
+
+.signUpLink a {
+  margin-top: 11px;
 }
 
 /*# sourceMappingURL=style.css.map */

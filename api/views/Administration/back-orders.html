@@ -2,7 +2,7 @@
 <html lang="en" class="no-js">
 <html lang="en">
 <head>
-    <title>Users management</title>
+    <title>Orders management</title>
     <meta charset="UTF-8">
     <meta name="description" content="">
     <meta name="keywords" content="">
@@ -58,7 +58,7 @@
                 <div class="container">
                     <div class="inner">
                         <h1 id="ht-logo">
-                            <a href="/api/pizza/">
+                            <a href="/api/pizza/getAll">
                                 <img class="logo-top" src="/images/logo.png" alt="">
                             </a>
                             Realty
@@ -67,7 +67,7 @@
                         <div class="ht-main-nav-wrapper">
                             <nav id="ht-main-nav">
                                 <ul>
-                                    <li><a href="/api/pizza/">Pizzas</a></li>
+                                    <li><a href="/api/pizza/getAll">Pizzas</a></li>
                                     <li><a href="/api/users/profile">Profile</a></li>
                                 </ul>
                                 <ul>
@@ -98,34 +98,42 @@
     <div class="ht-section hs-editors grid">
         <div class="hs-content">
             <div class="container">
-                {% for user in users %}
-                <div class="row">
-                    <div class="row-member">
-                        <h3 class="entry-name">{{user.username}}</h3>
-                        <!--TODO Add avatar in a <figure class ="avatar"> -->
-                    </div>
-                    <div class="row-admin">
-                        <div class="is-admin">
-                            <h4>Admin:{{user.admin}}</h4>
+
+                    {% for order in orders %}
+                    <hr>
+                    <div class="row">
+                        {% for user in users %}
+                        <div class="bo-order-user">
+                            {% if user.id == order.user %}
+                                    <h3>Order's user: {{user.username}}</h3>
+
+                            {% endif %}
                         </div>
-                    </div>
-                    <div class="row-status">
-                        <!--TODO Add isActive field in user model to display activness -->
-                        <!--<div class="active">Yes/No dummy</div>-->
-                        {% if user.id != currentUser._id %}<a class="delete" title="Delete user" href="/api/admin/users/delete/{{user.id}}"> Delete user
-                            <!--<span class="icon icon-delete">-->
-                                <!---->
-                            <!--</span>-->
-                        </a>{% endif %}
-                    </div>
+                        {% endfor %}
+                        <h3>Order details: {{order.state}}</h3>
+                        {% for pizzaId in order.pizzaList %}
+                        <div class="bo-order-pizzalist">
+                            {% for pizza in pizzas %}
+                                {% if pizza.id == pizzaId %}
+                                <div class="bo-order-pizza">
+                                    <h4>Pizza details:</h4>
+                                    <li>{{pizza.name}}</li>
+                                    <li>{{pizza.description}}</li>
+                                    <li>{{pizza.price}}</li>
+                                    <li>{{pizza.sizeType}}</li>
+                                    <li>{{pizza.doughType}}</li>
+                                </div>
+                                {% endif %}
 
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
 
-                </div>
-                {% endfor %}
             </div>
         </div>
     </div>
-
 
     <footer id="ht-footer">
         <div class="container">

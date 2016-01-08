@@ -8,7 +8,7 @@ router.get('/' , function(req, res) {
     res.redirect('/api/login');
 });
 
-router.post('/' , function(req, res)
+router.post('/addUser' , function(req, res)
 {
     var registerErr = null;
     var m_mail = req.body.mail.toString();
@@ -47,35 +47,71 @@ router.post('/' , function(req, res)
                         user.save(function (err) {
                             if (err)
                                 console.log(err);
-                            else {
+                            else
+                            {
                                 console.log('User saved successfully');
+                                res.render('SignUpLogin/signUpSuccess', {registerSuccess: "Merci, vous êtes bien inscrit !", username: req.body.username, pass: req.body.pass });
                             }
                         });
                     }
-                    else {
-                        registerErr = "L'utilisateur existe déjà";
+                    else
+                    {
+                        registerErr = "L'utilisateur existe déjà !";
                         console.log(registerErr);
+                        res.render('SignUpLogin/signUp', {registerErr: registerErr, firstname: req.body.firstname,
+                                                                        lastname: req.body.lastname,
+                                                                        username: req.body.username,
+                                                                        email: m_mail,
+                                                                        checkMail : req.body.checkmail,
+                                                                        password: req.body.pass,
+                                                                        address: req.body.address,
+                                                                        phoneNumber: req.body.phone});
+
                     }
                 });
             }
-            else {
-                registerErr = "Votre addresse mail n'est pas une addresse Ynov.";
+            else
+            {
+                registerErr = "Votre adresse mail n'est pas une adresse Ynov !";
                 console.log(registerErr);
+                res.render('SignUpLogin/signUp', {registerErr: registerErr, firstname: req.body.firstname,
+                                                                lastname: req.body.lastname,
+                                                                username: req.body.username,
+                                                                email: m_mail,
+                                                                checkMail : req.body.checkmail,
+                                                                password: req.body.pass,
+                                                                address: req.body.address,
+                                                                phoneNumber: req.body.phone});
             }
-        }else{
-            registerErr = "Les deux mots de passe ne sont pas identiques";
+        }
+        else
+        {
+            registerErr = "Les deux mots de passe ne sont pas identiques !";
             console.log(registerErr);
+            res.render('SignUpLogin/signUp', {registerErr: registerErr, firstname: req.body.firstname,
+                                                            lastname: req.body.lastname,
+                                                            username: req.body.username,
+                                                            email: m_mail,
+                                                            checkMail : req.body.checkmail,
+                                                            password: req.body.pass,
+                                                            address: req.body.address,
+                                                            phoneNumber: req.body.phone});
         }
     }
     else
     {
-        registerErr = "Les deux addresses mails ne sont pas identiques";
+        registerErr = "Les deux adresses mails ne sont pas identiques !";
         console.log(registerErr);
+        res.render('SignUpLogin/signUp', {registerErr: registerErr, firstname: req.body.firstname,
+                                                        lastname: req.body.lastname,
+                                                        username: req.body.username,
+                                                        email: m_mail,
+                                                        checkMail : req.body.checkmail,
+                                                        password: req.body.pass,
+                                                        address: req.body.address,
+                                                        phoneNumber: req.body.phone});
     }
-    if(registerErr != null)
-        res.render('login', {registerErr: registerErr});
-    else
-        res.render('login', {registerSuccess: "Merci, vous êtes bien inscrit"});
+
 });
 
 

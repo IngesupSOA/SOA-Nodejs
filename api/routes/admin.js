@@ -7,12 +7,12 @@ var mongoose = require('mongoose'),
     Order = mongoose.model('Order');
 var Cookies = require("cookies");
 var utils = require("../Utils/utils.js");
+var config = require('../config.json');
+var jwt = require('jsonwebtoken');
 
 /* GET admin home page. */
 router.get('/', function (req, res) {
-    utils.middleware(true, req, res, function () {
         res.redirect('/api/admin/orders');
-    });
 });
 
 /* GET admin users page. */
@@ -21,10 +21,11 @@ router.get('/users', function (req, res) {
     find().
     exec(function (err, usersRet) {
         if (err) throw err;
-        var cookieUser = JSON.parse(new Cookies(req, res).get("user"));
 
+        var token = new Cookies(req, res).get('access_token');
+        var user = jwt.decode(token, config.secret);
         console.log(usersRet);
-        res.render('back-users', {users: usersRet, currentUser: cookieUser});
+        res.render('Administration/back-users', {users: usersRet, currentUser: user});
     });
     //res.write('hello');
 });
@@ -57,7 +58,7 @@ router.get('/orders', function (req, res) {
 
             Pizza.find().exec(function(err, pizzas){
                 //res.json(pizzas);
-               res.render('back-orders', {orders: orders, users: users, pizzas: pizzas});
+               res.render('Administration/back-orders', {orders: orders, users: users, pizzas: pizzas});
             });
         });
     });
@@ -68,7 +69,7 @@ router.get('/orders', function (req, res) {
         Order.
         find().
         exec(function (err, orders) {
-            res.render('back-orders', orders);
+            res.render('Administration/back-orders', orders);
         });
         //res.write('hello');
     });

@@ -8,6 +8,9 @@ var Order = mongoose.model('Order');
 var Pizza = mongoose.model('Pizza');
 var User = mongoose.model('User');
 var Class = mongoose.model('Class');
+var config = require('../config.json');
+var jwt = require('jsonwebtoken');
+
 
 router.get('/getAll', function(req, res, next) {
     Order.
@@ -75,7 +78,7 @@ router.get('/paypal', function(req, res, next) {
             }
         });
     }else{
-        res.redirect('/api/pizza/');
+        res.redirect('/api/pizza/getAll');
     }
 });
 
@@ -95,7 +98,7 @@ router.get('/success', function(req, res) {
 });
 
 router.get('/fail', function(req, res) {
-    res.redirect('/api/pizza/');
+    res.redirect('/api/pizza/getAll');
 });
 
 function parseOrderPaypalJson(paymentDescription, order){
@@ -118,7 +121,7 @@ function parseOrderPaypalJson(paymentDescription, order){
 
 router.get('/cleanOrder', function(req, res) {
     res.clearCookie('order');
-    res.redirect('/api/pizza');
+    res.redirect('/api/pizza/getAll');
 });
 
 router.get('/cleanOrder/:value1', function(req, res) {
@@ -138,15 +141,7 @@ router.get('/cleanOrder/:value1', function(req, res) {
     });
 
     res.clearCookie('order');
-    return res.redirect('/api/pizza');
-});
-
-router.get('/cleanOrderAll', function(req, res) {
-    Order.remove( function(err) {
-        if(err) console.log(err.message);
-    });
-    res.clearCookie('order');
-    return res.status(200).json({working:true});
+    res.redirect('/api/pizza/getAll');
 });
 
 router.get('/addPizza/name/:value1/price/:value2', function(req, res) {
@@ -170,12 +165,14 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res) {
 
     if(cookieJson == undefined || cookieJson == null) {
         //console.log('----------------createdOrder------------');
-        var userJson = JSON.parse(new Cookies(req, res).get("user"));
+        var token = new Cookies(req, res).get('access_token');
+        var user = jwt.decode(token, config.secret);
+
         firstPizza.save();
         //IF order is not create, create a new order
         var orderToInsert = new Order({
             "pizzaList": [firstPizza],
-            "user": userJson,
+            "user": user,
             "state": "ToBePaid",
             "paymentType": "PayPal"
         });
@@ -194,7 +191,7 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res) {
             secure: false      // for your dev environment => true for prod
         });
 
-        return res.redirect('/api/pizza');
+        return res.redirect('/api/pizza/getAll');
     }
     else
     {
@@ -210,7 +207,7 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res) {
             httpOnly: true,
             secure: false      // for your dev environment => true for prod
         });
-        return res.redirect('/api/pizza');
+        return res.redirect('/api/pizza/getAll');
     }
 });
 
