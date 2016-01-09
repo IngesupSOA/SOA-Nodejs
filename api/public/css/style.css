@@ -4798,7 +4798,7 @@ dd {
   right: 10px;
   z-index: 999;
   background-color: rgb(163, 169, 166);
-  max-height: 350px;
+  /*max-height: 350px;*/
   /*overflow-y: scroll;*/
 
   -moz-border-radius: 10px;
@@ -7538,6 +7538,7 @@ select[multiple].input-lg {
 }
 .ht-form-block label, .login-form form label, .register-form form label {
   font-weight: 700;
+  margin-top: 5px;
 }
 @media (max-width: 767px) {
   .ht-form-block .row, .login-form form .row, .register-form form .row {
@@ -8649,6 +8650,7 @@ table th[class*="col-"] {
 
 .tab-content {
     overflow-y: scroll;
+    max-height: 200px;
 }
 
 .nav-tabs .dropdown-menu {
@@ -8664,6 +8666,18 @@ table th[class*="col-"] {
 
 .signUpLink a {
   margin-top: 11px;
+}
+
+.ht-form-block-back-user {
+  margin : 10px;
+}
+
+#isAdmin {
+  background-color: white;
+}
+
+#delUserAdmin {
+  float: none !important;
 }
 
 /*# sourceMappingURL=style.css.map */

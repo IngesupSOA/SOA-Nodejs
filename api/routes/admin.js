@@ -39,7 +39,35 @@ router.get('/users/delete/:value', function (req, res) {
         if (err) throw err;
         res.redirect('/api/admin/users');
     });
-    //res.write('hello');
+});
+
+router.post('/users/updUser', function(req, res, next) {
+    User.
+        update(
+        {_id: req.body.userId},
+        {$set: {
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            username: req.body.username,
+            email: req.body.email,
+            address: req.body.address,
+            phoneNumber: req.body.phoneNumber,
+            admin: req.body.isAdmin
+        }},
+        {multi: true}
+    ).exec(function(err) {
+            if (err)
+                console.log(err.message);
+            else
+            {
+                res.redirect('/api/admin/users');
+                /*User.findOne({_id: req.body.userId}, function(err,user) {
+                    utils.createCookie(utils.createToken(user), '/api/users/Profile/Le profile a été mis à jour !', req, res);
+                });*/
+            }
+
+        });
+
 });
 
 /* GET admin orders page. */

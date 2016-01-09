@@ -173,7 +173,7 @@ router.get('/addPizza/name/:value1/price/:value2', function(req, res) {
         var orderToInsert = new Order({
             "pizzaList": [firstPizza],
             "user": user,
-            "state": "ToBePaid",
+            "state": "toBePaid",
             "paymentType": "PayPal"
         });
 
